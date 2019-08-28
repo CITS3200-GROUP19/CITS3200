@@ -20,32 +20,42 @@ patient_data.columns = ['FullName', 'BirthDate']
 TABLE_NAME = "PATIENT_TABLE.csv"
 #Columns: PatientID, PatientFirstName, PatientLastName, PatientDOB
 patient_table = pd.DataFrame()
-patient_data.columns = ['PatientID', 'PatientFirstName', 'PatientLastName', 'PatientDOB']
+#patient_table.columns = ['PatientID', 'PatientFirstName', 'PatientLastName', 'PatientDOB']
 
 '''Cleaning Names'''
 NULL_NAME = "N/A"
 NAMES_LIST = []
 #cleans name into first/last
-def clean_name(raw_name):
+def clean_name(row):
+    raw_name = row['FullName']
+    DOB = row['BirthDate']
+    DOB = DOB.replace('-','/')
     for char in raw_name:
         if char.isdigit():
-            return NULL_NAME
-    name = raw_name.replace(',',' ').replace('.',' ').replace("''",'').replace('"','') #some name fields have , and . and ' that need removing
+            return pd.Series([NULL_NAME,NULL_NAME,DOB])
+    name = raw_name.replace(',',' ').replace('.',' ').strip("'").replace('"','').replace('/','') #some name fields have , and . and ' that need removing
 
     name = name.upper() #convert all names to UPPERCASE only
-    name = name.replace('MRS','').replace('MR','').replace('MR','') #need to remove titles from some names....
+    name = name.replace('MRS','').replace('MR','').replace('MR','').replace('DR','') #need to remove titles from some names....
     name = ' '.join(name.split()).strip(' ').split(' ') #remove unneccesary spaces and split on space between names
 
+    #separate into first and last name
     fname = name[-1]
     lname = ' '.join(name[0:-1]) #remake lname if has multiple parts
-    new_name = [fname,lname]
-    rev_name = [lname,fname]
-    for check_name in NAMES_LIST:
-        if fuzz.ratio(str(new_name),check_name)>90 or rev_name == check_name:
-            return check_name
-    NAMES_LIST.append(new_name)
-    print(new_name)
-    return new_name
+    new_name_DOB = [fname,lname,DOB]
+    rev_name_DOB = [lname,fname,DOB]
+
+    for check_name_DOB in NAMES_LIST:
+        #first look for simiar birthdates. IF not, clearly different person hopefully!
+        newDMY = DOB.split("/")
+        checkDMY = check_name_DOB[2].split("/")
+        if fuzz.ratio(DOB,check_name_DOB[2])>82 or (newDMY[0]==checkDMY[1] and newDMY[1]==checkDMY[0] and newDMY[2]==checkDMY[2]):
+            #check for name matching within similar birthdates
+            if fuzz.ratio(str(new_name_DOB[0:2]),str(check_name_DOB[0:2]))>91 or rev_name_DOB == check_name_DOB:
+                return pd.Series(check_name_DOB)
+    NAMES_LIST.append(new_name_DOB)
+    print(new_name_DOB)
+    return pd.Series(new_name_DOB)
 '''
 all_names = patient_data.iloc[:,0].tolist()
 all_DOBs = patient_data.iloc[:,1].tolist()
@@ -84,9 +94,12 @@ print(same_Bday_list)
 
 print(all_names)
 '''
+'''
 patient_data['PatientFirstName'] = patient_data.apply(lambda row: clean_name(row['FullName'])[0], axis=1)
 patient_data['PatientLastName'] = patient_data.apply(lambda row: clean_name(row['FullName'])[1], axis=1)
+patient_data['PatientDOB']'''
 
+patient_data[['PatientFirstName','PatientLastName','PatientDOB']] = patient_data.apply(clean_name ,axis=1)
 #patient_table["PatientFirstName"] = [clean_name(name)[0] for name in all_names]
 #patient_table["PatientLastName"] = [clean_name(name)[1] for name in all_names]
 
