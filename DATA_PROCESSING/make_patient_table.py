@@ -12,21 +12,10 @@ from get_data import data, SCHEMA_OUTPUT_FILE_PATH
 '''get relevant fields from BIG_DATA_FILE (Id, birthdate, fullname)'''
 patient_data = data.iloc[:, [2,4,5]].copy() #data.iloc[:, [0,2,5]].copy()
 patient_data.columns = ['FullName', 'OriginalID', 'BirthDate']
-'''
-patient_data["count"] = patient_data.groupby(patient_data.columns.tolist(),as_index=False).size()
-patient_data = patient_data.drop_duplicates().head(100)
-'''
 patient_data = patient_data.groupby(patient_data.columns.tolist()).size().reset_index().rename(columns={0:'Count'})
-patient_data = patient_data
 
 print(patient_data.head())
 #the patientID field is useless!! Same people have different IDs and same IDs refer to different people... or no IDs at all...
-
-'''create new normalised patient table'''
-TABLE_NAME = "PATIENT_TABLE.csv"
-#Columns: PatientID, PatientFirstName, PatientLastName, PatientDOB
-patient_table = pd.DataFrame()
-#patient_table.columns = ['PatientID', 'PatientFirstName', 'PatientLastName', 'PatientDOB']
 
 '''Cleaning Names'''
 NULL_NAME = "N/A"
@@ -78,8 +67,8 @@ def rough_clean_name(row):
         lname = name.split(",")[0].strip(' ')
     else:
         name = name.split(' ') #split on white space
-        lname = name[-1]
-        fname = ' '.join(name[:-1]) #remake fname if has multiple parts
+        lname = name[0]
+        fname = ' '.join(name[1:]) #remake fname if has multiple parts
     new_name_DOB = [fname,lname,DOB,count]
     #case where first and last names have been entered in different orders...
     rev_name_DOB = [lname,fname,DOB,count]
@@ -148,6 +137,30 @@ patient_data[['PatientFirstName','PatientLastName','PatientDOB']] = patient_data
 print("applying fine clean...")
 patient_data[['PatientFirstName','PatientLastName','PatientDOB']] = patient_data.apply(fine_clean_name ,axis=1)
 
-print(patient_data.drop_duplicates().head())
+patient_data2 = data.iloc[:, [0,2]].copy() #data.iloc[:, [0,2,5]].copy()
+patient_data2.columns = ['TestID','FullName']
 
-patient_data.to_csv(SCHEMA_OUTPUT_FILE_PATH+TABLE_NAME, index=False, encoding='utf8')
+patient_data = pd.merge(patient_data2,patient_data,on='FullName')
+print(patient_data.head())
+
+
+#create reliability IDs
+patient_data['PatientID'] = patient_data.groupby(['PatientFirstName','PatientLastName','PatientDOB']).ngroup().astype(int)
+
+'''IDs to be added to the FACT_TABLE!!!'''
+patient_IDs = patient_data['PatientID'].tolist()
+print(len(patient_IDs))
+patient_data = patient_data.drop(['TestID','FullName','OriginalID'], axis=1).drop_duplicates().sort_values(['PatientDOB'])
+
+'''create new normalised patient table'''
+TABLE_NAME = "PATIENT_TABLE.csv"
+#Columns: PatientID, PatientFirstName, PatientLastName, PatientDOB
+patient_table = pd.DataFrame()
+#patient_table.columns = ['PatientID', 'PatientFirstName', 'PatientLastName', 'PatientDOB']
+patient_table['PatientID'] = patient_data['PatientID']
+patient_table['PatientDOB'] = patient_data['PatientDOB']
+patient_table['PatientFirstName'] = patient_data['PatientFirstName']
+patient_table['PatientLastName'] = patient_data['PatientLastName']
+
+
+patient_table.to_csv(SCHEMA_OUTPUT_FILE_PATH+TABLE_NAME, index=False, encoding='utf8')
