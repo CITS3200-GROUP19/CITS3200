@@ -7,25 +7,21 @@ import datetime
 import time
 import shutil
 from pathlib import Path
-
-#ensure the data is labelled "projectdata.csv" and sits adjacent to the GitHub Repo
-BIG_DATA_FILE_PATH = "../../projectdata.csv"
-
-SCHEMA_OUTPUT_FILE_PATH = "../../CITS3200_schemas/"
-
-#reset schema folder
-shutil.rmtree(SCHEMA_OUTPUT_FILE_PATH)
-os.makedirs(SCHEMA_OUTPUT_FILE_PATH)
-
-#read in BIG_DATA_FILE_PATH
-data = pd.read_csv(BIG_DATA_FILE_PATH, low_memory=False) #names = ['Id','DateOfTest','PatientName','EyeTested','PatientId','BirthDate','NameOfTest','TimeOfTest','TypeOfTest','DataStatus','ElapsedTime','PupilDiameter','CentralDefectivePoints','WidespreadLoss','NasalStepDefectSuperior','NasalStepDefectInferior','VerticalStepNasalDefect','VerticalStepTemporalDefect','SuperonasalDefect','InferonasalDefect','SuperotemporalDefect','InferotemporalDefect'])
-print("BIG_DATA_FILE has {0} columns and {1} rows".format(len(data.columns),len(data.index)))
+from get_data import data, SCHEMA_OUTPUT_FILE_PATH
 
 #build patient table
-import make_patient_table
+#import make_patient_table
 #Columns: PatientID, PatientFirstName, PatientLastName, PatientDOB
+
+#build reliability table
+import make_reliability_table
+#Columns: ReliabilityID, ReliabilityGiven, ReliabilityColour, ReliabilityDesc, ReliabilityScore
 
 
 
 #make fact_table here...
 #Columns Test_ID, Date, Runtime, Mean_Deviation, Pattern_Deviation, Age
+FACT_TABLE = pd.DataFrame()
+FACT_TABLE['Test_ID'] = data.iloc[:,0].copy().tolist()
+FACT_TABLE['Reliability_ID'] = pd.Series(make_reliability_table.reliability_IDs) #from make_reliability file
+print(FACT_TABLE.head())

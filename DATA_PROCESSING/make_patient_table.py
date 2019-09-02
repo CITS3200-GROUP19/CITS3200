@@ -7,7 +7,7 @@ import time
 import shutil
 from fuzzywuzzy import fuzz
 
-from make_all_schemas import BIG_DATA_FILE_PATH, SCHEMA_OUTPUT_FILE_PATH, data
+from get_data import data, SCHEMA_OUTPUT_FILE_PATH
 
 '''get relevant fields from BIG_DATA_FILE (Id, birthdate, fullname)'''
 patient_data = data.iloc[:, [2,4,5]].copy() #data.iloc[:, [0,2,5]].copy()
@@ -36,6 +36,7 @@ NAMES_LIST = []
 def keep_most_common_name(name_count1,name_count2,list):
     #name1 already in list.
     if name_count1[-1] >= name_count2[-1]:
+        #=> name1 has more instances than name2
         if name_count1[0:2]!=name_count2[0:2]:
             print("{0} matched with and was replaced by {1}".format(name_count2,name_count1))
         return list, name_count1[0:3]
@@ -68,7 +69,7 @@ def rough_clean_name(row):
     name = raw_name.strip(' ').strip(',').replace('.',' ').replace("'",'').replace('"','').replace('/','').replace('[','').replace("]",'') #some name fields have , and . and ' that need removing
     name = name.replace("(",'').replace(")",'') #some cases have prefered names in ( ) will treat these as middle names...
     name = name.upper() #convert all names to UPPERCASE only
-    name = name.replace('MRS ','').replace('MR ','').replace('MR ','').replace('DR ','').replace(' MRS','').replace(' MR','').replace(' MR','').replace(' DR','') #need to remove titles from some names....
+    name = name.replace('MRS ','').replace('MR ','').replace('MR ','').replace('DR ','').replace(' MRS','').replace(' MR','').replace(' MR','').replace(' DR','').replace(' MS','').replace('MS ','') #need to remove titles from some names....
     name = ' '.join(name.split()).strip(' ') #remove unneccesary spaces
 
     #separate into first and last name
