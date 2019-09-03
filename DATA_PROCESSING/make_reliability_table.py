@@ -42,9 +42,9 @@ reliability_data['ReliabilityID'] = reliability_data.groupby(['ReliabilityScore'
 
 def has_reliability(row):
     if row['ReliabilityScore'] == -1:
-        return 0
+        return "No"
     else:
-        return 1
+        return "Yes"
 
 reliability_data['ReliabilityExists'] = reliability_data.apply(has_reliability ,axis=1)
 
