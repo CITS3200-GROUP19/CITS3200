@@ -20,3 +20,5 @@ os.makedirs(SCHEMA_OUTPUT_FILE_PATH)
 #read in BIG_DATA_FILE_PATH
 data = pd.read_csv(BIG_DATA_FILE_PATH, low_memory=False,header=None) #names = ['Id','DateOfTest','PatientName','EyeTested','PatientId','BirthDate','NameOfTest','TimeOfTest','TypeOfTest','DataStatus','ElapsedTime','PupilDiameter','CentralDefectivePoints','WidespreadLoss','NasalStepDefectSuperior','NasalStepDefectInferior','VerticalStepNasalDefect','VerticalStepTemporalDefect','SuperonasalDefect','InferonasalDefect','SuperotemporalDefect','InferotemporalDefect'])
 print("BIG_DATA_FILE has {0} columns and {1} rows".format(len(data.columns),len(data.index)))
+
+data = data.head(100)
