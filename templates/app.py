@@ -1,5 +1,5 @@
 ## Bootstrap Grid tutorial - adding style to the app
-# test
+# test visualisation for dash
 
 # -*- coding: utf-8 -*-
 import dash
