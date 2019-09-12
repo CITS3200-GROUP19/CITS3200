@@ -1,10 +1,10 @@
 from flask import *
 from flask import render_template, request
-app = Flask(__name__, template_folder='/Users/Jordan/myproject/templates')
+app = Flask(__name__)
 
 @app.route("/")
 def home():
-	return render_template("message.html")
+	return render_template("login.html")
 
 @app.route("/about")
 def about():
@@ -19,6 +19,10 @@ def cookie():
 	res = make_response("<h1>cookie</h1>")
 	res.set_cookie('foo','bar')
 	return res
+
+@app.route("/home")
+def home():
+	return render_template("home.html")
 
 @app.route("/login")
 def login():
