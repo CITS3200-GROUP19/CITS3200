@@ -1,15 +1,14 @@
-{% extends 'base.html' %} 
-{% import 'bootstrap/wtf.html' as wtf %} 
-{% block app_content %}
-<div class="fluid-container">
-    <div class="col-12">
-        <h1>Sign In</h1>
-        <div class="row">
-             <div class="col-md-4">
-                {{ wtf.quick_form(form) }}
-            </div>
-        </div>
-        <br>
-     </div>
-</div>
-{% endblock %}
+<html>  
+<head>  
+    <title>login</title>  
+</head>  
+<body>  
+    <form method = "post" action = "http://localhost:5000/login_success">  
+        <table>  
+            <tr><td>Email</td><td><input type = 'email' name = 'email'></td></tr>  
+            <tr><td>Password</td><td><input type = 'password' name = 'pass'></td></tr>  
+            <tr><td><input type = "submit" value = "Submit"></td></tr>  
+        </table>  
+    </form>
+</body>
+</html>
