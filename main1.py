@@ -8,7 +8,7 @@ def login():
 
 @app.route("/about")
 def about():
-	return render_template("about(old).html")
+	return render_template("about.html")
 
 @app.route("/admin")
 def admin():
