@@ -35,6 +35,7 @@ def login_success():
 		password = request.form["pass"]
 
 	if password=="test":
+
 		resp = make_response(render_template("success.html"))
 		resp.set_cookie("email",email)
 		return resp

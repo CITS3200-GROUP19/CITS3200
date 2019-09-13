@@ -15,25 +15,27 @@
     .fa-anchor,.fa-coffee {font-size:200px}
     p {font-size: 20px}
 
+
+
 </style>
 
 </head>  
 
 
 <body>
-    <div class="w3-container w3-grey w3-center">
+    <div class="w3-container w3-pale-blue w3-center">
 	<h1 class="w3-margin w3-jumbo"> Login Page </h1>
     
 	<p> Please login to gain access </p>  
     </div>
-    <div class="w3-center">
-    <form method = "post" action = "/login_success">  
-        <table>  
-            <tr><td>Email</td><td><input type = 'email' name = 'email'></td></tr>  
-            <tr><td>Password</td><td><input type = 'password' name = 'pass'></td></tr>  
-            <tr><td><input type = "submit" value = "Submit"></td></tr>  
-        </table> 
-    </form>
+    <div class="col-xs-1" align="center">
+            <form method = "post" action = "/login_success">  
+                <table>  
+                <tr><td>Email:</td><td><input type = 'email' name = 'email'></td></tr>  
+                <tr><td>Password:</td><td><input type = 'password' name = 'pass'></td></tr>  
+                <tr><td><input type = "submit" value = "Submit"></td></tr>  
+                </table> 
+            </form>
     </div>
     
 </body>
