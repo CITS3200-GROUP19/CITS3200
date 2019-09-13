@@ -13,8 +13,8 @@ from fuzzywuzzy import fuzz
 from get_data import data, SCHEMA_OUTPUT_FILE_PATH
 #Columns: humphreyID, humphreySide, humphreyAcuity
 '''get relevant fields from BIG_DATA_FILE (Id, birthdate, fullname)'''
-humphrey_data = data.iloc[:, [0,79]].copy() #data.iloc[:, [0,2,5]].copy()
-humphrey_data.columns = ['TestID','HumphreyData']
+humphrey_data = data.iloc[:, [0,3,79]].copy() #data.iloc[:, [0,2,5]].copy()
+humphrey_data.columns = ['TestID','EyeTested','HumphreyData']
 
 print(humphrey_data.head())
 
@@ -34,9 +34,8 @@ def extract(row): ## match left humphrey, right humphrey positions with correct 
     raw = str(raw)
     values = re.findall('..', raw) ## converts raw values into a list of double digit numbers (as strings temporarily)
     for i in range(0,len(values)):
-        print(values)
         values[i] = int(values[i]) ## converts all values back to integer from string
-    if(int(row[3])): ##is right humphrey
+    if(int(row['EyeTested'])): ##is right humphrey
         mapping = dict(zip(rightPositions, values))
     else: ##is left humphrey
         mapping = dict(zip(leftPositions, values))
@@ -44,24 +43,23 @@ def extract(row): ## match left humphrey, right humphrey positions with correct 
     for i in range (0, 77):
         templist.append(mapping.get(i, "-")) ##creates list of humphry values in its corresponding position as the
                                             ##index of the list, if there is no value in the index position, -
-    print(templist)
     return(pd.Series(templist))
 
-columns = ['H'+str(i) for i in range(1,77)]
+columns = ['H'+str(i) for i in range(1,78)]
+print(columns)
 
-humphrey_data[columns] = humphrey_data.apply(extract ,axis=1)
-
+humphrey_data[columns] = humphrey_data.apply(extract, axis=1)
 
 '''IDs to be added to the FACT_TABLE!!!'''
 humphrey_data['HumphreyID'] = humphrey_data.groupby(columns).ngroup()
 humphrey_IDs = humphrey_data['HumphreyID'].tolist()
 print(len(humphrey_IDs))
 
-humphrey_data = humphrey_data.drop(['TestID'], axis=1).drop_duplicates().sort_values(columns)
+humphrey_data = humphrey_data.drop(['TestID'], axis=1).drop_duplicates()
 
 
 '''create new normalised patient table'''
-TABLE_NAME = "humphrey_TABLE.csv"
+TABLE_NAME = "HUMPHREY_TABLE.csv"
 #Columns: humphreyID, humphreySide, humphreyAcuity
 humphrey_table = pd.DataFrame()
 humphrey_table['HumphreyID'] = humphrey_data['HumphreyID']

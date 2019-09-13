@@ -26,7 +26,7 @@ import make_eye_table
 #Columns: EyeID, EyeSide, EyeAcuity
 
 #build HUMPHREY table
-#import make_humphrey_table
+import make_humphrey_table
 #Columns: HumphreyID, H1, H2, H3, ... H76
 
 #make fact_table here...
@@ -36,7 +36,7 @@ TABLE_NAME = "FACT_TABLE.csv"
 FACT_TABLE = pd.DataFrame()
 FACT_TABLE['Test_ID'] = data.iloc[:,0].copy().tolist()
 FACT_TABLE['Defect_ID'] = pd.Series(make_defect_table.defect_IDs) #from make_reliability file
-#FACT_TABLE['Humphrey_ID'] = pd.Series(make_humphrey_table.humphrey_IDs) #from make_reliability file
+FACT_TABLE['Humphrey_ID'] = pd.Series(make_humphrey_table.humphrey_IDs) #from make_reliability file
 FACT_TABLE['Eye_ID'] = pd.Series(make_eye_table.eye_IDs) #from make_reliability file
 FACT_TABLE['Patient_ID'] = pd.Series(make_patient_table.patient_IDs) #from make_reliability file
 FACT_TABLE['Reliability_ID'] = pd.Series(make_reliability_table.reliability_IDs) #from make_reliability file
