@@ -1,5 +1,16 @@
 python -m venv venv
 virtualenv venv 
 source venv/bin/activate
-python3 ./setup.py
-flask run
+python3 setup.py
+python3 -m flask db init
+python3 -m flask db migrate
+python3 -m flask db upgrade
+python3 -m flask run
+
+python3 -m flask shell
+from app import db
+from app.models import User
+u = User(username='asd')
+u.set_password('asd')
+db.session.add(u)
+db.session.commit()
