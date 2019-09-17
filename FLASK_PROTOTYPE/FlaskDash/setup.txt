@@ -1,4 +1,13 @@
+CD to FlaskDash directory
+python3 -m venv venv
+
+virtualenv venv
+
 source venv/bin/activate
+or for Windows:
+venv\Scripts\activate 
+
+touch .envrc
 
 export FLASK_APP=dashapp
 export FLASK_ENV=development
@@ -7,9 +16,10 @@ export SECRET_KEY=secret_key_change_as_you_wish_make_it_long_123
 
 source .envrc
 
+pip install -r requirements.txt
+
 flask db init
 flask db migrate -m 'init'
-flask db upgrade'
-
+flask db upgrade
 flask run
 
