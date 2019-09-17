@@ -1,6 +1,6 @@
-from flask import render_template
+from flask import render_template, flash
 from app import app
-from app.forms import LoginForm
+from app.forms import LoginForm, AdminForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 
@@ -36,7 +36,8 @@ def about():
 
 @app.route("/admin")
 def admin():
-	return render_template("admin.html")
+	form = AdminForm()
+	return render_template("admin.html", form=form)
 
 @app.route("/user")
 def user():
