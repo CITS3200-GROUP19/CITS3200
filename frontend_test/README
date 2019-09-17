@@ -1,4 +1,4 @@
-python -m venv venv
+python3 -m venv venv
 virtualenv venv 
 source venv/bin/activate
 python3 setup.py
@@ -7,6 +7,7 @@ python3 -m flask db migrate
 python3 -m flask db upgrade
 python3 -m flask run
 
+This code is for adding a User with username 'asd' and password 'asd'
 python3 -m flask shell
 from app import db
 from app.models import User

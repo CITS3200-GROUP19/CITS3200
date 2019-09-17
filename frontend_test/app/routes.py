@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, flash
 from app import app
 from app.forms import LoginForm, AdminForm
 from flask_login import current_user, login_user, logout_user, login_required

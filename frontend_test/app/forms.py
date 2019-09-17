@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
 
 class AdminForm(FlaskForm):
     username = StringField('Enter your username:')
-    doctors = BooleanField('Doctors')
-    masters = BooleanField('Masters')
+    doctors = BooleanField('Doctor')
+    researchers = BooleanField('Researcher')
     submit = SubmitField('Request')
     
