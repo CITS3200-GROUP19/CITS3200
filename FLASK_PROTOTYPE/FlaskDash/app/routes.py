@@ -62,11 +62,11 @@ def logout():
 @server_mod.route('/userProfile')
 @login_required
 def user_profile():
-    return render_template('userProfile.html', name=current_user.username)
+   return render_template('userProfile.html', name=current_user.username)
 
 @server_mod.route('/home')
 @login_required
-def user_profile():
+def home():
     return render_template('home.html', name=current_user.username)
 
 
