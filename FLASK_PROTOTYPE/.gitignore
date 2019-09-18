@@ -1,0 +1,5 @@
+#ignore .envrc
+.envrc
+
+#ignore venv
+venv/
