@@ -25,7 +25,7 @@ server_mod = Blueprint('main', __name__)
 @server_mod.route('/')
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('/home'))
+        return render_template('home.html', name=current_user.username)
     else:
         return redirect(url_for('main.login'))
 
