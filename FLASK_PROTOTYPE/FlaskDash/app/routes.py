@@ -59,10 +59,10 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-@server_mod.route('/userManual')
+@server_mod.route('/userProfile')
 @login_required
-def user_manual():
-    return render_template('userManual.html', name=current_user.username)
+def user_profile():
+    return render_template('userProfile.html', name=current_user.username)
 
 
 @server_mod.route('/about')
