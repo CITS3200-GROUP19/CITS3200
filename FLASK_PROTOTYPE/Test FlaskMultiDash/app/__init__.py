@@ -49,7 +49,7 @@ def register_dashapp(app, title, base_pathname, layout, register_callbacks_fun):
 
     my_dashapp = dash.Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'],
                            server=app,
-                           url_base_pathname=f'/{base_pathname}/',
+                           routes_pathname_prefix=f'/{base_pathname}/',
                            assets_folder=get_root_path(__name__) + f'/{base_pathname}/assets/',
                            meta_tags=[meta_viewport])
     # Push an application context so we can use Flask's 'current_app'
@@ -62,7 +62,7 @@ def register_dashapp(app, title, base_pathname, layout, register_callbacks_fun):
 
 def _protect_dashviews(dashapp):
     for view_func in dashapp.server.view_functions:
-        if view_func.startswith(dashapp.url_base_pathname):
+        if view_func.startswith('/dashboard') or view_func.startswith('/example'):
             dashapp.server.view_functions[view_func] = login_required(dashapp.server.view_functions[view_func])
 
 

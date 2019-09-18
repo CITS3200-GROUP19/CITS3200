@@ -42,6 +42,7 @@ def returnData(id):
     print(data)
     return data
 
+
 def data_table_map(data_pairs, data_table):
     # Top Row
     i = 3
@@ -128,8 +129,8 @@ def register_callbacks(dashapp):
         # Outputs id of selected row
         Output('graphs', "children"),
         # Output(component_id='cur_plot', component_property='src'),
-        [Input('All Data', "selected_rows"),
-        ])
+        [Input('All Data', "selected_rows")]
+        )
     # Returns row id of selected row
     # Can now display data from this row index
     def update(selected_row_ids):
@@ -149,13 +150,13 @@ def register_callbacks(dashapp):
             # Data Dict
             right_eye_dict = {}
             left_eye_dict = {}
-            map_data.map_to_dict("1", split_data, left_eye_dict, right_eye_dict)
+            map_to_dict("1", split_data, left_eye_dict, right_eye_dict)
 
             # Append data to dataframe
             w, h = 9, 8
             data_table = [[0 for x in range(w)] for y in range(h)]
             # Append data to 2D array
-            heat.data_table_map(right_eye_dict, data_table)
+            data_table_map(right_eye_dict, data_table)
             # Create pandas dataframe from 2D list of data
             data_df = pd.DataFrame(data_table, dtype=float)
             # Convert dataframe to dictionary for plotly heatmap
