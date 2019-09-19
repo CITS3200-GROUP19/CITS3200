@@ -5,16 +5,19 @@
     Login
 {% endblock %}
 
+{% block navbar %}
+{% endblock %}
+
 {% block content %}
-<div class="fluid-container">
-  <div class="col-12">
-    <h1>Sign In</h1>
-    <div class="row">
-      <div class="col-md-4">
+
+<div class="fluid-container" class="col-xs-1" align="center">
+   <h1>Sign In</h1>
+    <div class="col-xs-1" align="center">
+      <div class="col-md-4" align="center">
         {{ wtf.quick_form(form) }}
       </div>
     </div>
-  </div>
+
 </div>
 
 {% endblock %}

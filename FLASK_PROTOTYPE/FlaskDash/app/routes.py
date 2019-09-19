@@ -25,7 +25,7 @@ server_mod = Blueprint('main', __name__)
 @server_mod.route('/')
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('/dashboard/'))
+        return redirect(url_for('main.home'))
     else:
         return redirect(url_for('main.login'))
 
@@ -59,11 +59,15 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-@server_mod.route('/userManual')
+@server_mod.route('/user_profile')
 @login_required
-def user_manual():
-    return render_template('userManual.html', name=current_user.username)
+def user_profile():
+    return render_template('user_profile.html', name=current_user.username)
 
+@server_mod.route('/home')
+@login_required
+def home():
+    return render_template('home.html', name=current_user.username)
 
 @server_mod.route('/about')
 @login_required
@@ -71,16 +75,16 @@ def about():
     return render_template('about.html', name=current_user.username)
 
 
-@server_mod.route('/admin', methods=['GET', 'POST'])
-@login_required
-def admin():
-    # if (current_user.is_authenticated and current_user.role == 'Admin'):
-    if (current_user.is_authenticated):
-        return 'admin'
-    else:
-        form = LoginForm()
-        error = 'Please log in'
-        return render_template('login.html', form=form, error=error)
+#@server_mod.route('/admin', methods=['GET', 'POST'])
+#@login_required
+#def admin():
+#    # if (current_user.is_authenticated and current_user.role == 'Admin'):
+#    if (current_user.is_authenticated):
+#        return 'admin'
+#    else:
+#        form = LoginForm()
+#        error = 'Please log in'
+#        return render_template('login.html', form=form, error=error)
 
 class MyModelView(ModelView):
     def is_accessible(self):
