@@ -2,3 +2,5 @@ venv
 *.pyc
 .DS_Store
 .env
+.DS_Store
+FLASK_PROTOTYPE/.DS_Store
