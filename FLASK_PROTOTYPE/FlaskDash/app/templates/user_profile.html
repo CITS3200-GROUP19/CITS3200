@@ -1,8 +1,16 @@
-<html>  
-<head>  
-    <title> {{name}}'s Profile</title>  
-</head>  
-<body>  
-    <h3>{{name}}'s profile </h3>  
-</body>  
-</html>  
+{% extends "base.html" %} 
+
+{% block title %} 
+    Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+	<div class="card-body">
+		<h1> User: {{name}} </h1>
+		<p> Role: {{role}} </p>
+	</div>
+</div>
+
+{% endblock %}
