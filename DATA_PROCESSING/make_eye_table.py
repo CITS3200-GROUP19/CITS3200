@@ -45,11 +45,6 @@ eye_table['EyeID'] = eye_data['EyeID']
 eye_table['EyeSide'] = eye_data['EyeSide']
 eye_table['EyeAcuity'] = eye_data['EyeAcuity']
 
-
-
-
-
-
 eye_table.to_csv(SCHEMA_OUTPUT_FILE_PATH+TABLE_NAME, index=False, encoding='utf8')
 
 print(eye_table)

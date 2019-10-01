@@ -29,7 +29,7 @@ import re
 ##InferonasalDefect93
 ##SuperotemporalDefect 94
 ##InferotemporalDefect 95
-##622 combinations of defects from 45000 patients - could possibly be 524288
+##622 combinations of defects from 45000 tests - could possibly be 524288
 
 from get_data import data, SCHEMA_OUTPUT_FILE_PATH
 

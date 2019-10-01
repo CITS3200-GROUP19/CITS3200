@@ -52,6 +52,7 @@ def get_age(row):
     #need to get cleaned DOB...
     PatientID = row['Patient_ID']
     df = make_patient_table.patient_table
+    #print(row,PatientID)
     DOB = df.loc[df["PatientID"] == PatientID]['PatientDOB'].values[0]
     #compute age
     age = pd.to_datetime(date) - pd.to_datetime(DOB)
