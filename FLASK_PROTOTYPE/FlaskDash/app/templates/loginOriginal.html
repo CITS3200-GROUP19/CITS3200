@@ -28,13 +28,17 @@ a {
   font-weight: 400;
 }
 
-form {
+h2 {
   text-align: center;
   font-size: 16px;
   font-weight: 600;
+  text-transform: uppercase;
   display:inline-block;
   margin: 40px 8px 10px 8px; 
+  color: #cccccc;
 }
+
+
 
 /* STRUCTURE */
 
@@ -57,8 +61,8 @@ form {
   max-width: 450px;
   position: relative;
   padding: 0px;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0);
-  box-shadow: 0 30px 60px 0 rgba(0,0,0,0);
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   text-align: center;
 }
 
@@ -76,7 +80,7 @@ form {
 /* TABS */
 
 h2.inactive {
-  color: #0d0d0d;
+  color: #cccccc;
 }
 
 h2.active {
@@ -84,12 +88,14 @@ h2.active {
   border-bottom: 2px solid #5fbae9;
 }
 
+
+
 /* FORM TYPOGRAPHY*/
 
 input[type=button], input[type=submit], input[type=reset]  {
   background-color: #56baed;
   border: none;
-  color: #ffffff;
+  color: white;
   padding: 15px 80px;
   text-align: center;
   text-decoration: none;
@@ -269,14 +275,10 @@ input[type=text]:placeholder {
 
 <div class="wrapper fadeInDown">
   <div id="formContent">
-
     <!-- Login Form -->
-    <form method=post>
-    	{{ form.csrf_token }}
-    	{{ form.name }}
+    <form>
     	{{ wtf.quick_form(form) }}
     </form>
-
   </div>
 </div>
 

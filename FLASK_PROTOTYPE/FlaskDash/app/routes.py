@@ -36,6 +36,7 @@ def login():
         return redirect(url_for('main.index'))
 
     form = LoginForm()
+
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not check_password_hash(user.password_hash, form.password.data):
@@ -62,17 +63,17 @@ def logout():
 @server_mod.route('/user_profile')
 @login_required
 def user_profile():
-    return render_template('user_profile.html', name=current_user.username)
+    return render_template('user_profile.html', name=current_user.username, role=current_user.role)
 
 @server_mod.route('/home')
 @login_required
 def home():
-    return render_template('home.html', name=current_user.username)
+    return render_template('home.html')#, name=current_user.username)
 
 @server_mod.route('/about')
 @login_required
 def about():
-    return render_template('about.html', name=current_user.username)
+    return render_template('about.html')#, name=current_user.username)
 
 
 #@server_mod.route('/admin', methods=['GET', 'POST'])
