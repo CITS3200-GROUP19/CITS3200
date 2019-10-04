@@ -270,7 +270,7 @@ tornado==6.0.3
 tqdm==4.32.1
 traceback2==1.4.0
 traitlets==4.3.2
-Twisted==19.2.0
+Twisted==19.7.0
 typing==3.6.4
 uamqp==1.1.0
 unicodecsv==0.14.1
