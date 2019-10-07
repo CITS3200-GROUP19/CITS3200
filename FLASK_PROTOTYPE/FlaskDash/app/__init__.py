@@ -18,7 +18,7 @@ def create_app():
 
     register_dashapps(server)
     register_extensions(server)
-    register_blueprints(server)  
+    register_blueprints(server)
 
     # login_manager = LoginManager()
     # login_manager.init_app(server)
@@ -34,7 +34,7 @@ def create_app():
 # @login_manager.user_loader
 # def load_user(user_id):
 #     return User.query.get(int(user_id))
-    
+
 def register_dashapps(app):
     from app.dashapp1.layout import layout
     from app.dashapp1.callbacks import register_callbacks
