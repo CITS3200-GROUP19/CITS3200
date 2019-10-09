@@ -10,8 +10,7 @@ from flask_login import logout_user
 from werkzeug.urls import url_parse
 from werkzeug.security import check_password_hash
 
-from flask_admin import expose, BaseView
-
+from flask_admin import Admin, AdminIndexView, expose, BaseView
 from flask_admin.contrib.sqla import ModelView
 
 from app.forms import LoginForm
@@ -77,24 +76,24 @@ def about():
     return render_template('about.html')#, name=current_user.username)
 
 
-#@server_mod.route('/admin', methods=['GET', 'POST'])
-#@login_required
-#def admin():
-#    # if (current_user.is_authenticated and current_user.role == 'Admin'):
-#    if (current_user.is_authenticated):
-#        return 'admin'
-#    else:
-#        form = LoginForm()
-#        error = 'Please log in'
-#        return render_template('login.html', form=form, error=error)
+@server_mod.route('/admin', methods=['GET', 'POST'])
+@login_required
+def admin():
+#    if (current_user.is_authenticated and current_user.role == 'doctor'):
+   if (current_user.is_authenticated):
+       return 'admin'
+   else:
+       form = LoginForm()
+       error = 'Please log in'
+       return render_template('login.html', form=form, error=error)
 
 class MyModelView(ModelView):
     def is_accessible(self):
-        # if (current_user.is_authenticated and current_user.role == 'Admin'):
+        # if (current_user.is_authenticated and current_user.role == 'doctor'):
         if (current_user.is_authenticated):
             return True
-        # elif (current_user.is_authenticated and current_user.role == 'user'):
-        #     return False
+        # elif (current_user.is_authenticated and current_user.role == 'researcher'):
+            # return False
         else:
             return False
 

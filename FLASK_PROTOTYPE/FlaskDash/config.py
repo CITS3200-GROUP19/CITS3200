@@ -1,8 +1,9 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-
 class BaseConfig:
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    DB_USERNAME = os.environ.get('DB_USERNAME')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD')
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://'+DB_USERNAME+':'+DB_PASSWORD+'@146.118.64.10/Dashgang'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ['SECRET_KEY']
