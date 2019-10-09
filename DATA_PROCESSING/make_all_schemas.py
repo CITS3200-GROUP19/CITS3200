@@ -36,7 +36,7 @@ TABLE_NAME = "FACT_TABLE.csv"
 FACT_TABLE = pd.DataFrame()
 FACT_TABLE['Test_ID'] = data.iloc[:,0].copy().tolist()
 FACT_TABLE['Defect_ID'] = pd.Series(make_defect_table.defect_IDs) #from make_reliability file
-#FACT_TABLE['Humphrey_ID'] = pd.Series(make_humphrey_table.humphrey_IDs) #from make_reliability file
+FACT_TABLE['Humphrey_ID'] = pd.Series(make_humphrey_table.humphrey_IDs) #from make_reliability file
 FACT_TABLE['Eye_ID'] = pd.Series(make_eye_table.eye_IDs) #from make_reliability file
 FACT_TABLE['Patient_ID'] = pd.Series(make_patient_table.patient_IDs) #from make_reliability file
 FACT_TABLE['Reliability_ID'] = pd.Series(make_reliability_table.reliability_IDs) #from make_reliability file
@@ -53,7 +53,7 @@ def get_age(row):
     PatientID = row['Patient_ID']
     df = make_patient_table.patient_data
     DOB = df.loc[df["PatientID"] == PatientID]['PatientDOB']
-    print(DOB)
+    #print(DOB)
     if DOB.empty:
         return 0
     else:
