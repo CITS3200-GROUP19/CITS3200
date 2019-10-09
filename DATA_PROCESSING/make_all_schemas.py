@@ -26,7 +26,7 @@ import make_eye_table
 #Columns: EyeID, EyeSide, EyeAcuity
 
 #build HUMPHREY table
-#import make_humphrey_table
+import make_humphrey_table
 #Columns: HumphreyID, H1, H2, H3, ... H76
 
 #make fact_table here...
@@ -51,11 +51,16 @@ def get_age(row):
     date = row['Date']
     #need to get cleaned DOB...
     PatientID = row['Patient_ID']
-    df = make_patient_table.patient_table
-    DOB = df.loc[df["PatientID"] == PatientID]['PatientDOB'].values[0]
-    #compute age
-    age = pd.to_datetime(date) - pd.to_datetime(DOB)
-    age = int(age.days / (365.25) + 100)
+    df = make_patient_table.patient_data
+    DOB = df.loc[df["PatientID"] == PatientID]['PatientDOB']
+    print(DOB)
+    if DOB.empty:
+        return 0
+    else:
+        DOB=DOB.values[0]
+        #compute age
+        age = pd.to_datetime(date) - pd.to_datetime(DOB)
+        age = int(age.days / (365.25))
     return age
 
 FACT_TABLE['Age'] = FACT_TABLE.apply(get_age, axis=1)
