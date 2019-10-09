@@ -16,7 +16,7 @@ import plotly.tools as tls
 
 
 # VF DATA PREPARATION
-vf_data = pd.read_csv("projectdata.csv")
+vf_data = pd.read_csv("processed_data.csv")
 
 visual_acuity_data = []
 data_dict = {}

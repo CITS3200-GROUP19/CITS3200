@@ -19,6 +19,9 @@ from app.forms import LoginForm
 # from app.forms import RegistrationForm
 from app.models import User
 
+from app.forms import RegistrationForm
+from app.extensions import db
+
 server_mod = Blueprint('main', __name__)
 
 # This should be login? #
@@ -120,20 +123,20 @@ class NewView(BaseView):
 #     return render_template('admin_login.html', form=form)
 
 
-# Don't need a register? ##
+#   For testing purposes
+@server_mod.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
 
-# @server_mod.route('/register', methods=['GET', 'POST'])
-# def register():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('main.index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data)
+        user.set_password(form.password.data)
+        user.set_role(form.role.data)
+        db.session.add(user)
+        db.session.commit()
 
-#     form = RegistrationForm()
-#     if form.validate_on_submit():
-#         user = User(username=form.username.data)
-#         user.set_password(form.password.data)
-#         db.session.add(user)
-#         db.session.commit()
+        return redirect(url_for('main.login'))
 
-#         return redirect(url_for('main.login'))
-
-#     return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Register', form=form)
