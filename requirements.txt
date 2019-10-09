@@ -26,3 +26,4 @@ virtualenv==16.7.5
 w3lib==1.21.0
 Werkzeug==0.16.0
 WTForms==2.2.1
+gunicorn==19.9.0
