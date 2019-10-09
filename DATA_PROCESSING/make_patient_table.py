@@ -24,7 +24,7 @@ NAMES_LIST = []
 #when we find matches we have to decide which spelling/DOB to keep... will go on commonality.
 def keep_most_common_name(name_count1,name_count2,list):
     #name1 already in list.
-    if name_count1[-1] >= name_count2[-1]:
+    if name_count1[-1] > name_count2[-1] or (name_count1[-1] == name_count2[-1] and name_count1[0]!= name_count1[1]):
         #=> name1 has more instances than name2
         if name_count1[0:2]!=name_count2[0:2]:
             print("{0} matched with and was replaced by {1}".format(name_count2,name_count1))
@@ -137,30 +137,35 @@ patient_data[['PatientFirstName','PatientLastName','PatientDOB']] = patient_data
 print("applying fine clean...")
 patient_data[['PatientFirstName','PatientLastName','PatientDOB']] = patient_data.apply(fine_clean_name ,axis=1)
 
-patient_data2 = data.iloc[:, [0,2]].copy() #data.iloc[:, [0,2,5]].copy()
-patient_data2.columns = ['TestID','FullName']
+patient_data2 = data.iloc[:, [0,2,96,97]].copy() #data.iloc[:, [0,2,5]].copy()
+patient_data2.columns = ['TestID','FullName','PatientCodeName','PatientCodeDOB']
 
 patient_data = pd.merge(patient_data2,patient_data,on='FullName')
-print(patient_data.head())
+print(patient_data)
 
 
 #create reliability IDs
+print("adding IDS")
 patient_data['PatientID'] = patient_data.groupby(['PatientFirstName','PatientLastName','PatientDOB']).ngroup().astype(int)
-
+print(patient_data)
 '''IDs to be added to the FACT_TABLE!!!'''
 patient_IDs = patient_data['PatientID'].tolist()
 print(len(patient_IDs))
-patient_data = patient_data.drop(['TestID','FullName','OriginalID'], axis=1).drop_duplicates().sort_values(['PatientDOB'])
-
+patient_data = patient_data.drop(['TestID','FullName','OriginalID'], axis=1)
+print(patient_data)
 '''create new normalised patient table'''
 TABLE_NAME = "PATIENT_TABLE.csv"
 #Columns: PatientID, PatientFirstName, PatientLastName, PatientDOB
 patient_table = pd.DataFrame()
 #patient_table.columns = ['PatientID', 'PatientFirstName', 'PatientLastName', 'PatientDOB']
-patient_table['PatientID'] = patient_data['PatientID']
+patient_table['PatientID'] = patient_data.drop_duplicates(subset = "PatientID", keep='first')['PatientID']
+patient_table['PatientCodeName'] = patient_data.drop_duplicates(subset = "PatientID", keep='first')['PatientCodeName']
+patient_table['PatientCodeDOB'] = patient_data.drop_duplicates(subset = "PatientID", keep='first')['PatientCodeDOB']
+
+'''
 patient_table['PatientDOB'] = patient_data['PatientDOB']
 patient_table['PatientFirstName'] = patient_data['PatientFirstName']
 patient_table['PatientLastName'] = patient_data['PatientLastName']
-
+'''
 
 patient_table.to_csv(SCHEMA_OUTPUT_FILE_PATH+TABLE_NAME, index=False, encoding='utf8')

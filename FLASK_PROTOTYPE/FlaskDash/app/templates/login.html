@@ -10,8 +10,19 @@
 
 {% block content %}
 
+<<<<<<< HEAD
+<div class="fluid-container" class="col-xs-1" align="center">
+   <h1>Sign In</h1>
+    <div class="col-xs-1" align="center">
+      <div class="col-md-4" align="center">
+        {{ wtf.quick_form(form) }}
+        {{ error }}
+      </div>
+    </div>
+=======
 <style>
 /* BASIC */
+>>>>>>> 722642acaaf36a5cf65bd4ee813413173d5f9365
 
 html {
   background-color: #56baed;
@@ -33,7 +44,7 @@ form {
   font-size: 16px;
   font-weight: 600;
   display:inline-block;
-  margin: 40px 8px 10px 8px; 
+  margin: 40px 8px 10px 8px;
 }
 
 /* STRUCTURE */
@@ -41,7 +52,7 @@ form {
 .wrapper {
   display: flex;
   align-items: center;
-  flex-direction: column; 
+  flex-direction: column;
   justify-content: center;
   width: 100%;
   min-height: 100%;
@@ -260,7 +271,7 @@ input[type=text]:placeholder {
 
 *:focus {
     outline: none;
-} 
+}
 
 #icon {
   width:60%;

@@ -23,7 +23,7 @@ def get_side_and_acuity(row):
         side = "Right"
         acuity = row['RightAcuity']
     else:
-        print("Error",row)
+        print("Error:::",row)
     return pd.Series([side,acuity])
 
 eye_data[['EyeSide','EyeAcuity']] = eye_data.apply(get_side_and_acuity ,axis=1)
