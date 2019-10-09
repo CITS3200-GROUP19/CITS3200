@@ -6,7 +6,7 @@ from flask_bootstrap import Bootstrap
 
 from flask_admin import Admin
 from app.routes import MyModelView, NewView
-from app.models import User
+from app.models import User, Patient
 from app.extensions import db, login_manager
 
 from config import BaseConfig
@@ -25,6 +25,7 @@ def create_app():
 
     admin = Admin(server, template_mode='bootstrap3')
     admin.add_view(MyModelView(User, db.session))
+    admin.add_view(MyModelView(Patient, db.session))
     admin.add_view(NewView(name='back'))
 
     return server

@@ -12,10 +12,10 @@ from app.extensions import db
 
 
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     username = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(80))
-    role = db.Column(db.Enum('doctor', 'researcher', 'research'))
+    role = db.Column(db.Enum('doctor', 'researcher'))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -28,3 +28,11 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+
+class Patient(db.Model):
+    __tablename__ = 'PatientTable'
+    PatientID = db.Column(db.Integer, primary_key=True, index=True, unique=True)
+    PatientCodeName = db.Column(db.String(50), index=True, unique=True)
+    PatientCodeDOB = db.Column(db.Float, index=True)
+

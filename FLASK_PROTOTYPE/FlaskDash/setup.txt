@@ -11,8 +11,10 @@ touch .envrc
 
 export FLASK_APP=dashapp
 export FLASK_ENV=development
-export DATABASE_URL=sqlite:///$PWD/app.db
 export SECRET_KEY=secret_key_change_as_you_wish_make_it_long_123
+
+export DB_USERNAME=visualfield
+export DB_PASSWORD=dashgang
 
 source .envrc
 
@@ -23,4 +25,8 @@ flask db migrate -m 'init'
 flask db upgrade
 
 flask run
+
+
+For local test app.db (old):
+export DATABASE_URL=sqlite:///$PWD/app.db
 
