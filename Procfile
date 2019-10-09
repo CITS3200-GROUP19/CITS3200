@@ -1,1 +1,1 @@
-web: flask db upgrade; flask translate compile; gunicorn dashapp.py:app
+web: gunicorn --chdir app __init__.py:app
