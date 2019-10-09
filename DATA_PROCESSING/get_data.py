@@ -25,4 +25,4 @@ data = data.join(df2)
 print("BIG_DATA_FILE has {0} columns and {1} rows".format(len(data.columns),len(data.index)))
 print(data.head())
 
-data = data.head(500)
+#data = data.head(500)

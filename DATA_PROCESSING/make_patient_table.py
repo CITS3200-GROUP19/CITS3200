@@ -151,16 +151,16 @@ print(patient_data)
 '''IDs to be added to the FACT_TABLE!!!'''
 patient_IDs = patient_data['PatientID'].tolist()
 print(len(patient_IDs))
-patient_data = patient_data.drop(['TestID','FullName','OriginalID'], axis=1).drop_duplicates(subset = "PatientID", keep='first')
+patient_data = patient_data.drop(['TestID','FullName','OriginalID'], axis=1)
 print(patient_data)
 '''create new normalised patient table'''
 TABLE_NAME = "PATIENT_TABLE.csv"
 #Columns: PatientID, PatientFirstName, PatientLastName, PatientDOB
 patient_table = pd.DataFrame()
 #patient_table.columns = ['PatientID', 'PatientFirstName', 'PatientLastName', 'PatientDOB']
-patient_table['PatientID'] = patient_data['PatientID']
-patient_table['PatientCodeName'] = patient_data['PatientCodeName']
-patient_table['PatientCodeDOB'] = patient_data['PatientCodeDOB']
+patient_table['PatientID'] = patient_data.drop_duplicates(subset = "PatientID", keep='first')['PatientID']
+patient_table['PatientCodeName'] = patient_data.drop_duplicates(subset = "PatientID", keep='first')['PatientCodeName']
+patient_table['PatientCodeDOB'] = patient_data.drop_duplicates(subset = "PatientID", keep='first')['PatientCodeDOB']
 
 '''
 patient_table['PatientDOB'] = patient_data['PatientDOB']
