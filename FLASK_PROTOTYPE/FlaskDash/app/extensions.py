@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 migrate = Migrate()
-login_manager = LoginManager()
+login = LoginManager()
 
 
 # admin = Admin(server, template_mode='bootstrap3')

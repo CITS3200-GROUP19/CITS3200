@@ -7,7 +7,7 @@ from flask_bootstrap import Bootstrap
 from flask_admin import Admin
 from app.routes import MyModelView, NewView
 from app.models import User
-from app.extensions import db, login_manager
+from app.extensions import db
 
 from config import BaseConfig
 
@@ -20,8 +20,9 @@ def create_app():
     register_extensions(server)
     register_blueprints(server)
 
-    login_manager.init_app(server)
-    login_manager.login_view = 'main.login'
+    # login_manager = LoginManager()
+    # login_manager.init_app(server)
+    # login_manager.login_view = 'main.login'
 
     admin = Admin(server, template_mode='bootstrap3')
     admin.add_view(MyModelView(User, db.session))
@@ -30,9 +31,9 @@ def create_app():
     return server
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User.query.get(int(user_id))
 
 def register_dashapps(app):
     from app.dashapp1.layout import layout
@@ -63,12 +64,12 @@ def _protect_dashviews(dashapp):
 
 def register_extensions(server):
     from app.extensions import db
-    from app.extensions import login_manager
+    from app.extensions import login
     from app.extensions import migrate
 
     db.init_app(server)
-    login_manager.init_app(server)
-    login_manager.login_view = 'main.login'
+    login.init_app(server)
+    login.login_view = 'main.login'
     migrate.init_app(server, db)
 
 
