@@ -13,16 +13,16 @@ from app.extensions import db
 
 class User(UserMixin, db.Model):
     __tablename__ = 'Users'
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    HashPassword = db.Column(db.String(80))
-    role = db.Column(db.Enum('doctor', 'researcher'))
+    id = db.Column('ID', db.Integer, primary_key=True, unique=True)
+    username = db.Column('Username', db.String(64), index=True, unique=True)
+    password_hash = db.Column('HashPassword', db.String(80))
+    role = db.Column('Role', db.Enum('doctor', 'researcher'))
 
     def set_password(self, password):
-        self.HashPassword = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.HashPassword, password)
+        return check_password_hash(self.password_hash, password)
 
     def set_role(self, role):
         self.role = role
@@ -33,6 +33,7 @@ class User(UserMixin, db.Model):
 
 class Patient(db.Model):
     __tablename__ = 'PatientTable'
+<<<<<<< HEAD
     PatientID = db.Column(db.Integer, primary_key=True, index=True, unique=True)
     PatientCodeName = db.Column(db.String(50), index=True, unique=True)
     PatientCodeDOB = db.Column(db.Float, index=True)
@@ -158,3 +159,8 @@ class HumphreyTable(db.Model):
     H74 = db.Column(db.Integer)
     H75 = db.Column(db.Integer)
     H76 = db.Column(db.Integer)
+=======
+    id = db.Column('PatientID', db.Integer, primary_key=True, index=True, unique=True)
+    code_name = db.Column('PatientCodeName', db.String(50), index=True, unique=True)
+    code_dob = db.Column('PatientCodeDOB', db.Float, index=True)
+>>>>>>> d14362a50cbb91373371d6662256559530bbf22a

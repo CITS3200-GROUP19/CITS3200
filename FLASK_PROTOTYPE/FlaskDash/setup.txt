@@ -4,7 +4,7 @@ python3 -m venv venv
 virtualenv venv
 
 source venv/bin/activate
-or for Windows:
+	or for Windows:
 venv\Scripts\activate 
 
 touch .envrc
