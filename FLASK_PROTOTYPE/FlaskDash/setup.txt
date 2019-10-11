@@ -26,9 +26,8 @@ flask db upgrade
 
 flask run
 
-
-
 LOCAL TESTING:
+export DB_PASSWORD={SET THIS AS YOUR ROOT PASSWORD WHILE IN VENV}
 mysql> CREATE Database Dashgang
 mysql -u root -p Dashgang < Dashgang.sql
 
