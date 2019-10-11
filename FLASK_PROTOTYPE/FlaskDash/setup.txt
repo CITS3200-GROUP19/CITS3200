@@ -4,7 +4,7 @@ python3 -m venv venv
 virtualenv venv
 
 source venv/bin/activate
-	or for Windows:
+or for Windows:
 venv\Scripts\activate 
 
 touch .envrc
@@ -27,6 +27,13 @@ flask db upgrade
 flask run
 
 
+
+LOCAL TESTING:
+mysql> CREATE Database Dashgang
+mysql -u root -p Dashgang < Dashgang.sql
+
+
 For local test app.db (old):
 export DATABASE_URL=sqlite:///$PWD/app.db
+
 

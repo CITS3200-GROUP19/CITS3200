@@ -1,22 +1,164 @@
+# coding: utf-8
+## Created with command: sqlacodegen --flask mysql+pymysql://visualfield:dashgang@146.118.64.10/Dashgang --outfile flaskmodels.py
+
+#from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String, Time
+# from sqlalchemy.orm import relationship
+# from sqlalchemy.schema import FetchedValue
+# from flask_sqlalchemy import SQLAlchemy
+
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
 from app.extensions import db
-# from app.extensions import login_manager
 
 
-# @login.user_loader
-# def load_user(user_id):
-#     return User.query.get(int(user_id))
+class DefectTable(db.Model):
+    __tablename__ = 'DefectTable'
+
+    DefectID = db.Column(db.Integer, primary_key=True)
+    DefectNumberOf = db.Column(db.Integer, nullable=False)
+    DefectCombination = db.Column(db.String(20), nullable=False)
+
+
+class EyeTable(db.Model):
+    __tablename__ = 'EyeTable'
+
+    EyeID = db.Column(db.Integer, primary_key=True)
+    EyeSide = db.Column(db.String(10), nullable=False)
+    EyeAcuity = db.Column(db.Integer, nullable=False)
+
+
+class FactTable(db.Model):
+    __tablename__ = 'FactTable'
+
+    TestID = db.Column(db.Integer, primary_key=True)
+    DefectID = db.Column(db.ForeignKey('DefectTable.DefectID'), nullable=False, index=True)
+    HumphreyID = db.Column(db.ForeignKey('HumphreyTable.HumphreyID'), nullable=False, index=True)
+    EyeID = db.Column(db.ForeignKey('EyeTable.EyeID'), nullable=False, index=True)
+    PatientID = db.Column(db.ForeignKey('PatientTable.PatientID'), nullable=False, index=True)
+    ReliabilityID = db.Column(db.ForeignKey('ReliabilityTable.ReliabilityID'), nullable=False, index=True)
+    Date = db.Column(db.Date)
+    Runtime = db.Column(db.Time)
+    Mean_Deviation = db.Column(db.Float)
+    Pattern_Deviation = db.Column(db.Float)
+    Age = db.Column(db.Integer)
+
+    DefectTable = db.relationship('DefectTable', primaryjoin='FactTable.DefectID == DefectTable.DefectID', backref='fact_tables')
+    EyeTable = db.relationship('EyeTable', primaryjoin='FactTable.EyeID == EyeTable.EyeID', backref='fact_tables')
+    HumphreyTable = db.relationship('HumphreyTable', primaryjoin='FactTable.HumphreyID == HumphreyTable.HumphreyID', backref='fact_tables')
+    PatientTable = db.relationship('PatientTable', primaryjoin='FactTable.PatientID == PatientTable.PatientID', backref='fact_tables')
+    ReliabilityTable = db.relationship('ReliabilityTable', primaryjoin='FactTable.ReliabilityID == ReliabilityTable.ReliabilityID', backref='fact_tables')
+
+
+class HumphreyTable(db.Model):
+    __tablename__ = 'HumphreyTable'
+
+    HumphreyID = db.Column(db.Integer, primary_key=True)
+    H1 = db.Column(db.String(3))
+    H2 = db.Column(db.String(3))
+    H3 = db.Column(db.String(3))
+    H4 = db.Column(db.String(3))
+    H5 = db.Column(db.String(3))
+    H6 = db.Column(db.String(3))
+    H7 = db.Column(db.String(3))
+    H8 = db.Column(db.String(3))
+    H9 = db.Column(db.String(3))
+    H10 = db.Column(db.String(3))
+    H11 = db.Column(db.String(3))
+    H12 = db.Column(db.String(3))
+    H13 = db.Column(db.String(3))
+    H14 = db.Column(db.String(3))
+    H15 = db.Column(db.String(3))
+    H16 = db.Column(db.String(3))
+    H17 = db.Column(db.String(3))
+    H18 = db.Column(db.String(3))
+    H19 = db.Column(db.String(3))
+    H20 = db.Column(db.String(3))
+    H21 = db.Column(db.String(3))
+    H22 = db.Column(db.String(3))
+    H23 = db.Column(db.String(3))
+    H24 = db.Column(db.String(3))
+    H25 = db.Column(db.String(3))
+    H26 = db.Column(db.String(3))
+    H27 = db.Column(db.String(3))
+    H28 = db.Column(db.String(3))
+    H29 = db.Column(db.String(3))
+    H30 = db.Column(db.String(3))
+    H31 = db.Column(db.String(3))
+    H32 = db.Column(db.String(3))
+    H33 = db.Column(db.String(3))
+    H34 = db.Column(db.String(3))
+    H35 = db.Column(db.String(3))
+    H36 = db.Column(db.String(3))
+    H37 = db.Column(db.String(3))
+    H38 = db.Column(db.String(3))
+    H39 = db.Column(db.String(3))
+    H40 = db.Column(db.String(3))
+    H41 = db.Column(db.String(3))
+    H42 = db.Column(db.String(3))
+    H43 = db.Column(db.String(3))
+    H44 = db.Column(db.String(3))
+    H45 = db.Column(db.String(3))
+    H46 = db.Column(db.String(3))
+    H47 = db.Column(db.String(3))
+    H48 = db.Column(db.String(3))
+    H49 = db.Column(db.String(3))
+    H50 = db.Column(db.String(3))
+    H51 = db.Column(db.String(3))
+    H52 = db.Column(db.String(3))
+    H53 = db.Column(db.String(3))
+    H54 = db.Column(db.String(3))
+    H55 = db.Column(db.String(3))
+    H56 = db.Column(db.String(3))
+    H57 = db.Column(db.String(3))
+    H58 = db.Column(db.String(3))
+    H59 = db.Column(db.String(3))
+    H60 = db.Column(db.String(3))
+    H61 = db.Column(db.String(3))
+    H62 = db.Column(db.String(3))
+    H63 = db.Column(db.String(3))
+    H64 = db.Column(db.String(3))
+    H65 = db.Column(db.String(3))
+    H66 = db.Column(db.String(3))
+    H67 = db.Column(db.String(3))
+    H68 = db.Column(db.String(3))
+    H69 = db.Column(db.String(3))
+    H70 = db.Column(db.String(3))
+    H71 = db.Column(db.String(3))
+    H72 = db.Column(db.String(3))
+    H73 = db.Column(db.String(3))
+    H74 = db.Column(db.String(3))
+    H75 = db.Column(db.String(3))
+    H76 = db.Column(db.String(3))
+    H77 = db.Column(db.String(3))
+
+
+class PatientTable(db.Model):
+    __tablename__ = 'PatientTable'
+
+    PatientID = db.Column(db.Integer, primary_key=True)
+    PatientCodeName = db.Column(db.String(50))
+    PatientCodeDOB = db.Column(db.Float, index=True)
+
+
+class ReliabilityTable(db.Model):
+    __tablename__ = 'ReliabilityTable'
+
+    ReliabilityID = db.Column(db.Integer, primary_key=True)
+    ReliabilityExists = db.Column(db.String(3), nullable=False)
+    ReliabilityColour = db.Column(db.String(8), nullable=False)
+    ReliabilityDesc = db.Column(db.String(50))
+    ReliabilityScore = db.Column(db.Integer, nullable=False)
 
 
 class User(UserMixin, db.Model):
     __tablename__ = 'Users'
+
     id = db.Column('ID', db.Integer, primary_key=True, unique=True)
-    username = db.Column('Username', db.String(64), index=True, unique=True)
-    password_hash = db.Column('HashPassword', db.String(80))
     role = db.Column('Role', db.Enum('doctor', 'researcher'))
+    username = db.Column('Username', db.String(50))
+    password_hash = db.Column('PasswordHash', db.String(80))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -29,138 +171,3 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
-
-
-class Patient(db.Model):
-    __tablename__ = 'PatientTable'
-<<<<<<< HEAD
-    PatientID = db.Column(db.Integer, primary_key=True, index=True, unique=True)
-    PatientCodeName = db.Column(db.String(50), index=True, unique=True)
-    PatientCodeDOB = db.Column(db.Float, index=True)
-
-##for rest of the data @@@@@@@@@----------------@@@@@@@@
-
-class FactTable(db.Model):
-    TestID = db.Column(db.Integer, primary_key=True)
-    HumphreyID = db.Column(db.Integer, db.ForeignKey('HumphreyTable.HumphreyID')) ##why not make this testID?
-    EyeID = db.Column(db.Integer, db.ForeignKey('EyeTable.EyeID'))
-    DefectID = db.Column(db.Integer, db.ForeignKey('DefectsTable.DefectID'))
-    ReliabilityID = db.Column(db.Integer, db.ForeignKey('ReliabilityTable.ReliabilityID'))
-    ##PatientID = db.Column(db.Integer, db.ForeignKey('PatientTable.PatientID'))
-    ##Data/Facts
-    Runtime = db.Column(db.Integer) ##not sure
-    Mean_Deviation = db.Column(db.Float)
-    Pattern_Deviation = db.Column(db.Float)
-    Age = db.Column(db.Integer)
-
-    def __init__(self, Runtime, Mean_Deviation, Pattern_Deviation, Age):
-        self.Runtime = Runtime
-        self.Mean_Deviation = Mean_Deviation
-        self.Pattern_Deviation = Pattern_Deviation
-        self.Age = Age
-
-class EyeTable(db.Model):
-    EyeID = db.Column(db.Integer, primary_key = True) ## o is left eye, 1 is right eye
-    EyeSide = db.Column(db.String(20))
-    EyeAcuity = db.Column(db.Integer)
-
-class DefectTable(db.Model):
-    DefectID = db.Column(db.Integer, primary_key = True)
-    DefectNumberOf = db.Column(db.Integer)
-    DefectCombination = db.Column(db.String(100))
-
-
-class ReliabilityTable(db.Model):
-    ReliabilityID = db.Column(db.Integer, primary_key = True)
-    ReliabilityGiven = db.Column(db.Integer)
-    ReliabilityColour = db.Column(db.String(20))
-    ReliabilityDesc = db.Column(db.String(200))
-    ReliabilityScore = db.Column(db.Integer)
-
-    #in unbuntu:
-    ##from Main import db
-    ##db.create_all
-
-class HumphreyTable(db.Model):
-    HumpreyID = db.Column(db.Integer, primary_key = True)
-    H1 = db.Column(db.Integer)
-    H2 = db.Column(db.Integer)
-    H3 = db.Column(db.Integer)
-    H4 = db.Column(db.Integer)
-    H5 = db.Column(db.Integer)
-    H6 = db.Column(db.Integer)
-    H6 = db.Column(db.Integer)
-    H7 = db.Column(db.Integer)
-    H8 = db.Column(db.Integer)
-    H9 = db.Column(db.Integer)
-    H10 = db.Column(db.Integer)
-    H11 = db.Column(db.Integer)
-    H12 = db.Column(db.Integer)
-    H13 = db.Column(db.Integer)
-    H14 = db.Column(db.Integer)
-    H15 = db.Column(db.Integer)
-    H16 = db.Column(db.Integer)
-    H17 = db.Column(db.Integer)
-    H18 = db.Column(db.Integer)
-    H19 = db.Column(db.Integer)
-    H20 = db.Column(db.Integer)
-    H21 = db.Column(db.Integer)
-    H22 = db.Column(db.Integer)
-    H23 = db.Column(db.Integer)
-    H24 = db.Column(db.Integer)
-    H25 = db.Column(db.Integer)
-    H26 = db.Column(db.Integer)
-    H27 = db.Column(db.Integer)
-    H28 = db.Column(db.Integer)
-    H29 = db.Column(db.Integer)
-    H30 = db.Column(db.Integer)
-    H31 = db.Column(db.Integer)
-    H32 = db.Column(db.Integer)
-    H33 = db.Column(db.Integer)
-    H34 = db.Column(db.Integer)
-    H35 = db.Column(db.Integer)
-    H36 = db.Column(db.Integer)
-    H37 = db.Column(db.Integer)
-    H38 = db.Column(db.Integer)
-    H39 = db.Column(db.Integer)
-    H40 = db.Column(db.Integer)
-    H41 = db.Column(db.Integer)
-    H42 = db.Column(db.Integer)
-    H43 = db.Column(db.Integer)
-    H44 = db.Column(db.Integer)
-    H45 = db.Column(db.Integer)
-    H46 = db.Column(db.Integer)
-    H47 = db.Column(db.Integer)
-    H48 = db.Column(db.Integer)
-    H50 = db.Column(db.Integer)
-    H51 = db.Column(db.Integer)
-    H52 = db.Column(db.Integer)
-    H53 = db.Column(db.Integer)
-    H54 = db.Column(db.Integer)
-    H55 = db.Column(db.Integer)
-    H56 = db.Column(db.Integer)
-    H57 = db.Column(db.Integer)
-    H58 = db.Column(db.Integer)
-    H59 = db.Column(db.Integer)
-    H60 = db.Column(db.Integer)
-    H61 = db.Column(db.Integer)
-    H62 = db.Column(db.Integer)
-    H63 = db.Column(db.Integer)
-    H64 = db.Column(db.Integer)
-    H65 = db.Column(db.Integer)
-    H66 = db.Column(db.Integer)
-    H67 = db.Column(db.Integer)
-    H68 = db.Column(db.Integer)
-    H69 = db.Column(db.Integer)
-    H70 = db.Column(db.Integer)
-    H71 = db.Column(db.Integer)
-    H72 = db.Column(db.Integer)
-    H73 = db.Column(db.Integer)
-    H74 = db.Column(db.Integer)
-    H75 = db.Column(db.Integer)
-    H76 = db.Column(db.Integer)
-=======
-    id = db.Column('PatientID', db.Integer, primary_key=True, index=True, unique=True)
-    code_name = db.Column('PatientCodeName', db.String(50), index=True, unique=True)
-    code_dob = db.Column('PatientCodeDOB', db.Float, index=True)
->>>>>>> d14362a50cbb91373371d6662256559530bbf22a
