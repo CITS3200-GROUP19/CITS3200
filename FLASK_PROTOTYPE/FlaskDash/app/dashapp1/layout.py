@@ -1,7 +1,5 @@
 import dash_core_components as dcc
 import dash_html_components as html
-from sqlalchemy import create_engine
-from app.extensions import db
 from app.models import FactTable
 import pandas as pd
 import os
