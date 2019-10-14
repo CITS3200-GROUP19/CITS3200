@@ -6,7 +6,7 @@ from flask_bootstrap import Bootstrap
 
 from flask_admin import Admin
 from app.routes import MyModelView, NewView
-from app.models import User, PatientTable
+from app.models import User, PatientTable, FactTable
 from app.extensions import db, login_manager
 
 from config import BaseConfig
@@ -47,6 +47,7 @@ def register_dashapps(app):
                          routes_pathname_prefix='/dashboard/',
                          assets_folder=get_root_path(__name__) + '/dashboard/assets/',
                          meta_tags=[meta_viewport])
+                         #,data = FactTable.query.all())
 
     with app.app_context():
         dashapp1.title = 'Dashapp 1'

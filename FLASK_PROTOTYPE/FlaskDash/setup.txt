@@ -5,7 +5,7 @@ virtualenv venv
 
 source venv/bin/activate
 or for Windows:
-venv\Scripts\activate 
+venv\Scripts\activate
 
 touch .envrc
 
@@ -27,6 +27,7 @@ flask db upgrade
 flask run
 
 LOCAL TESTING:
+mysql.server start
 export DB_PASSWORD={SET THIS AS YOUR ROOT PASSWORD WHILE IN VENV}
 mysql> CREATE Database Dashgang
 mysql -u root -p Dashgang < Dashgang.sql
@@ -34,5 +35,3 @@ mysql -u root -p Dashgang < Dashgang.sql
 
 For local test app.db (old):
 export DATABASE_URL=sqlite:///$PWD/app.db
-
-

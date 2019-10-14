@@ -5,6 +5,8 @@ from dash.dependencies import Input
 from dash.dependencies import Output
 
 
+
+
 def register_callbacks(dashapp):
     @dashapp.callback(Output('my-graph', 'figure'), [Input('my-dropdown', 'value')])
     def update_graph(selected_dropdown_value):
