@@ -16,7 +16,7 @@ def register_callbacks(dashapp):
     def update_graph(selected_dropdown_value):
         var = selected_dropdown_value
         print(var)
-        sql_string = 'SELECT Age,AVG('+var+'),COUNT('+var+') FROM FactTable JOIN ReliabilityTable ON FactTable.ReliabilityID = ReliabilityTable.ReliabilityID JOIN EyeTable ON FactTable.EyeID = EyeTable.EyeID WHERE '+var+' > 0 AND Age < 110 GROUP BY Age ORDER BY Age'
+        sql_string = 'SELECT Age,AVG('+var+'),COUNT('+var+') FROM FactTable JOIN ReliabilityTable ON FactTable.ReliabilityID = ReliabilityTable.ReliabilityID JOIN EyeTable ON FactTable.EyeID = EyeTable.EyeID WHERE Age < 110 GROUP BY Age ORDER BY Age'
         df = pd.read_sql(sql_string, con=db_connection)
         return {
             'data': [{
