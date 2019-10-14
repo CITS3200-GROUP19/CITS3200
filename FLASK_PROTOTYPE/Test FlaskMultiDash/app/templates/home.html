@@ -2,8 +2,55 @@
 
 
 {% block header %}
-		{% block title %}
-				<title>Home Page</title>  
-		{% endblock %}
+	{% block title %}
+			<title>Home Page</title>  
+	{% endblock %}
 {% endblock %}
 
+
+{% block content %}
+
+<style>
+	.card div:hover {
+		background: white;
+	}
+</style>
+
+{% if current_user.has_role('doctor') %}
+<div class="center">
+	<div class="card text-center mx-auto w3-yellow" style="border: 2px solid; border-radius: 5px; width: 260px;">
+		<div class="card-body">
+			<h4><a class="nav-link" style="color:black;" href="{{ url_for('/dashboard2/') }}">Time Series</a></h4>
+		</div>
+	</div>
+	<div class="card text-center mx-auto w3-yellow" style="border: 2px solid; border-radius: 5px; width: 260px; border-top: 0px;">
+		<div class="card-body">
+			<h4><a class="nav-link" style="color:black;" href="{{ url_for('/dashboard1/') }}">Aggregated View</a></h4>
+		</div>
+	</div>
+	<div class="card text-center mx-auto w3-yellow" style="border: 2px solid; border-radius: 5px; width: 260px; border-top: 0px;">
+		<div class="card-body">
+			<h4><a class="nav-link" style="color:black;" href="{{ url_for('/dashboard2/') }}">Patient Data</a></h4>
+		</div>
+	</div>
+	<div class="card text-center mx-auto w3-yellow" style="border: 2px solid; border-radius: 5px; width: 260px; border-top: 0px;">
+		<div class="card-body">
+			<h4><a class="nav-link" style="color:black;" href="{{ url_for('/dashboard1/') }}">Summary Statistics</a></h4>
+		</div>
+	</div>	
+</div>
+{% elif current_user.has_role('researcher') %}
+<div class="center">
+	<div class="card text-center mx-auto w3-yellow" style="border: 2px solid; border-radius: 5px; width: 260px;">
+		<div class="card-body">
+			<h4><a class="nav-link" style="color:black;" href="{{ url_for('/dashboard1/') }}">Aggregated View</a></h4>
+		</div>
+	</div>
+	<div class="card text-center mx-auto w3-yellow" style="border: 2px solid; border-radius: 5px; width: 260px; border-top: 0px;">
+		<div class="card-body">
+			<h4><a class="nav-link" style="color:black;" href="{{ url_for('/dashboard1/') }}">Summary Statistics</a></h4>
+		</div>
+	</div>	
+</div>
+{% endif %}
+{% endblock %}
