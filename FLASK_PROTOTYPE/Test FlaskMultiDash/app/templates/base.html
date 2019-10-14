@@ -45,9 +45,9 @@
 
 </head>
 
-
+{% block navbar %}
 <!-- Draft of Navigation Bar, url_for fields aren't linked with back-end team yet.  -->
-<nav class="navbar navbar-expand-lg navbar-light w3-light-gray">
+<nav class="navbar navbar-expand-lg navbar-light w3-yellow">
     <!--bg-light-->
     <a class="navbar-brand" href="{{ url_for('main.index') }}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,14 +55,18 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.admin') }}"><i class="fa fa-address-book" aria-hidden="true"></i> Admin Management</a>
+                {% if current_user.has_role('doctor') %}
+                <a class="nav-link" href="{{ url_for('/dashboard1/') }}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Dashboard</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('/dashboard/') }}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Dashboard</a>
+                {% elif current_user.has_role('researcher') %}
+                <a class="nav-link" href="{{ url_for('/dashboard2/') }}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Dashboard</a>
             </li>
+            {% endif %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.user_manual') }}"><i class="fa fa-book" aria-hidden="true"></i> User Manual</a>
+                <a class="nav-link" href="{{ url_for('main.user_profile') }}"><i class="fa fa-book" aria-hidden="true"></i> User Profile</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('main.about') }}"><i class="fa fa-users" aria-hidden="true"></i> About Us</a>
@@ -81,6 +85,8 @@
         </ul>
     </div> 
 </nav>
+
+{% endblock %}
 
 <body>
     {% block content %}
