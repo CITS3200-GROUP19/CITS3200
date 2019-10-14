@@ -1,13 +1,13 @@
 import dash
 from flask import Flask
 from flask.helpers import get_root_path
-from flask_login import login_required, LoginManager
+from flask_login import login_required
 from flask_bootstrap import Bootstrap
 
 from flask_admin import Admin
 from app.routes import MyModelView, NewView
 from app.models import User, PatientTable, FactTable
-from app.extensions import db, login_manager
+from app.extensions import login_manager
 
 from config import BaseConfig
 
@@ -20,13 +20,13 @@ def create_app():
     register_extensions(server)
     register_blueprints(server)
 
-    login_manager.init_app(server)
-    login_manager.login_view = 'main.login'
+    # login_manager.init_app(server)
+    # login_manager.login_view = 'main.login'
 
-    admin = Admin(server, template_mode='bootstrap3')
-    admin.add_view(MyModelView(User, db.session))
-    admin.add_view(MyModelView(PatientTable, db.session))
-    admin.add_view(NewView(name='back'))
+    # admin = Admin(server, template_mode='bootstrap3')
+    # admin.add_view(MyModelView(User, db.session))
+    # admin.add_view(MyModelView(PatientTable, db.session))
+    # admin.add_view(NewView(name='back'))
 
     return server
 
@@ -34,6 +34,7 @@ def create_app():
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 def register_dashapps(app):
     from app.dashapp1.layout import layout
@@ -65,13 +66,17 @@ def _protect_dashviews(dashapp):
 
 def register_extensions(server):
     from app.extensions import db
-    from app.extensions import login_manager
     from app.extensions import migrate
 
-    db.init_app(server)
-    login_manager.init_app(server)
-    login_manager.login_view = 'main.login'
-    migrate.init_app(server, db)
+    with server.app_context():
+        db.init_app(server)
+        login_manager.init_app(server)
+        login_manager.login_view = 'main.login'
+        migrate.init_app(server, db)
+        admin = Admin(server, template_mode='bootstrap3')
+        admin.add_view(MyModelView(User, db.session))
+        admin.add_view(MyModelView(PatientTable, db.session))
+        admin.add_view(NewView(name='back'))
 
 
 def register_blueprints(server):
