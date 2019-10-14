@@ -14,28 +14,18 @@ df = pd.read_sql('SELECT Age,AVG(ReliabilityScore),COUNT(ReliabilityScore) FROM 
 print(df)
 
 layout = html.Div([
-    html.H1('Stock Tickers'),
+    html.H1('Averages on Age'),
     dcc.Dropdown(
         id='my-dropdown',
         options=[
-            {'label': 'Coke', 'value': 'COKE'},
-            {'label': 'Tesla', 'value': 'TSLA'},
-            {'label': 'Apple', 'value': 'AAPL'}
+            {'label': 'Runtime', 'value': 'Runtime'},
+            {'label': 'Mean Deviation', 'value': 'Mean_Deviation'},
+            {'label': 'Pattern Deviation', 'value': 'Pattern_Deviation'},
+            {'label': 'Age', 'value': 'Age'},
+            {'label': 'Eye Acuity', 'value': 'EyeAcuity'},
+            {'label': 'Reliability Score', 'value': 'ReliabilityScore'}
         ],
-        value='COKE'
-    ),
-    dcc.Graph(
-        id='test',
-        figure={
-            'data': [
-                {'x': df['Age'], 'y': df["AVG(ReliabilityScore)"], 'type': 'bar', 'name': 'Test'},
-
-            ],
-            'layout': {
-                'title': 'ReliabilityScore vs Age',
-
-            }
-        }
+        value='Age'
     ),
     dcc.Graph(id='my-graph')
 ], style={'width': '500'})
