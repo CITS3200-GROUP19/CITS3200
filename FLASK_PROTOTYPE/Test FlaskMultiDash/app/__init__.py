@@ -63,7 +63,7 @@ def register_dashapp(app, title, base_pathname, layout, register_callbacks_fun):
 
 def _protect_dashviews(dashapp):
     for view_func in dashapp.server.view_functions:
-        if view_func.startswith('/graph') or view_func.startswith('/eyevis'):
+        if view_func.startswith('/dashboard1') or view_func.startswith('/dashboard2'):
         # if view_func.startswith(dashapp.routes_pathname_prefix):
             dashapp.server.view_functions[view_func] = login_required(dashapp.server.view_functions[view_func])
 
