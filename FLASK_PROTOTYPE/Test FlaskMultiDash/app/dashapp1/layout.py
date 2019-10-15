@@ -16,14 +16,29 @@ import os
 layout = html.Div([
     html.H1('Averages on Age'),
     dcc.Dropdown(
-        id='my-dropdown',
+        id='my-dropdown-X',
         options=[
             {'label': 'Runtime', 'value': 'Runtime'},
             {'label': 'Mean Deviation', 'value': 'Mean_Deviation'},
             {'label': 'Pattern Deviation', 'value': 'Pattern_Deviation'},
             {'label': 'Age', 'value': 'Age'},
             {'label': 'Eye Acuity', 'value': 'EyeAcuity'},
-            {'label': 'Reliability Score', 'value': 'ReliabilityScore'}
+            {'label': 'Reliability Score', 'value': 'ReliabilityScore'},
+            {'label': 'Number of Defects', 'value': 'DefectNumberOf'}
+
+        ],
+        value='Age'
+    ),
+    dcc.Dropdown(
+        id='my-dropdown-Y',
+        options=[
+            {'label': 'Runtime', 'value': 'Runtime'},
+            {'label': 'Mean Deviation', 'value': 'Mean_Deviation'},
+            {'label': 'Pattern Deviation', 'value': 'Pattern_Deviation'},
+            {'label': 'Age', 'value': 'Age'},
+            {'label': 'Eye Acuity', 'value': 'EyeAcuity'},
+            {'label': 'Reliability Score', 'value': 'ReliabilityScore'},
+            {'label': 'Number of Defects', 'value': 'DefectNumberOf'}
         ],
         value='Age'
     ),
