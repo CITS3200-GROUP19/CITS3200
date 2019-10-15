@@ -1,7 +1,12 @@
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_table
+import pandas as pd
+import re
 
+vf_data = pd.read_csv("processed_data.csv")
 
-
-
+patients_df = vf_data[0:20]
 
 layout = html.Div(children=[
     # Title at top of page
@@ -41,4 +46,4 @@ layout = html.Div(children=[
 
     ####
     # slider should be number of tests because dates will be too weird (eg size of patient.data)
-]
+])

@@ -13,22 +13,20 @@ from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
 import plotly.tools as tls
 # VF DATA PROCESSING
-import map_data
-import heat
 from collections import defaultdict
 
 
 # VF DATA PREPARATION
-vf_data = pd.read_csv("projectdata.csv")
+vf_data = pd.read_csv("processed_data.csv")
 
 visual_acuity_data = []
 data_dict = {}
 
 # DASH
 # Dash CSS Stylesheet 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-# 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+# # 
+# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 
 # SPRINT 2.1 TABLE DELIVERABLE, TEST VIEW
@@ -177,18 +175,18 @@ class Patient:
 
 
 
-def reguster_callbacks(dashapp):
+def register_callbacks(dashapp):
     # SLIDER CALLBACK
     # output title so displayed number doesnt change so it can be changed with another callback function
-    @app.callback(
-        Output('slider-output-container', 'title'),
+    @dashapp.callback(
+        Output('slider-output-container', 'children'),
         [Input('my-slider', 'value'),
          Input('All Data', 'selected_rows')])
     def update_output(value, selected_rows):
         return format(value)
 
     # Callback function to display test results from selected row
-    @app.callback(
+    @dashapp.callback(
         # Outputs id of selected row
         [Output('graphs', "children"),
          Output('slider-output-container', 'children'),
@@ -196,7 +194,8 @@ def reguster_callbacks(dashapp):
         # Output(component_id='cur_plot', component_property='src'),
         [Input('All Data', "selected_rows"),
          Input('slider-output-container', 'value')
-        ])
+         ])
+
     # Returns row id of selected row
     # Can now display data from this row index
     def update(selected_row_ids, kids):
@@ -228,7 +227,8 @@ def reguster_callbacks(dashapp):
 
             # Patients Heatmap
             # Process data
-            split_data = re.findall('..', patient.data[int(kids)])
+            pat_data = '{:f}'.format(patient.data)  ## Convert numpy64float to float
+            split_data = re.findall('..', pat_data[int(kids)])
             # Data Dict
             right_eye_dict = {}
             left_eye_dict = {}
