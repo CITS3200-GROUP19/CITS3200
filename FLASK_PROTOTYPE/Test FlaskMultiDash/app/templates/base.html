@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/94b6d30502.js"></script>
-
-    <!-- for about us styling -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <style>
     body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
@@ -30,6 +30,21 @@
     h5{
         line-height: 30px;
     }
+
+    body{
+        background-color = yellow;
+        background-image: linear-gradient(yellow, white);
+    }
+
+    .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
     </style>
 
 
@@ -45,9 +60,9 @@
 
 </head>
 
-
+{% block navbar %}
 <!-- Draft of Navigation Bar, url_for fields aren't linked with back-end team yet.  -->
-<nav class="navbar navbar-expand-lg navbar-light w3-light-gray">
+<nav class="navbar navbar-expand-lg navbar-light w3-yellow">
     <!--bg-light-->
     <a class="navbar-brand" href="{{ url_for('main.index') }}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,14 +70,18 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.admin') }}"><i class="fa fa-address-book" aria-hidden="true"></i> Admin Management</a>
+                {% if current_user.has_role('researcher') %}
+                <a class="nav-link" href="{{ url_for('/dashboard1/') }}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Dashboard</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('/dashboard/') }}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Dashboard</a>
+                {% elif current_user.has_role('doctor') %}
+                <a class="nav-link" href="{{ url_for('/dashboard2/') }}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Dashboard</a>
             </li>
+            {% endif %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.user_manual') }}"><i class="fa fa-book" aria-hidden="true"></i> User Manual</a>
+                <a class="nav-link" href="{{ url_for('main.user_profile') }}"><i class="fa fa-book" aria-hidden="true"></i> User Profile</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('main.about') }}"><i class="fa fa-users" aria-hidden="true"></i> About Us</a>
@@ -81,6 +100,8 @@
         </ul>
     </div> 
 </nav>
+
+{% endblock %}
 
 <body>
     {% block content %}

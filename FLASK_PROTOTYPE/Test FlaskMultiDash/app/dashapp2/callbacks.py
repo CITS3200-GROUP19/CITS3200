@@ -146,6 +146,8 @@ def register_callbacks(dashapp):
             print("Patient Data: ", pat_data)
 
             # Patients Heatmap
+            # pat_data = str(pat_data)
+            pat_data = '{:f}'.format(pat_data)
             split_data = re.findall('..', pat_data)
             # Data Dict
             right_eye_dict = {}
