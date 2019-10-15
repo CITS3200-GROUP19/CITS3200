@@ -6,6 +6,7 @@
 
 {% block content %}
 <style>
+
 .profile-card {
 	background: #FFB300;
 	width: 56px;
@@ -23,9 +24,9 @@
 	border-radius: 50%;
 	box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
 	animation: init 0.5s 0.2s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards, 
-	           moveDown 1s 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards, 
-	           moveUp 1s 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
-	           materia 0.5s 2.7s cubic-bezier(0.86, 0, 0.07, 1) forwards;
+	           moveDown 1s 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards, 
+	           moveUp 1s 1.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
+	           materia 0.5s 2.4s cubic-bezier(0.86, 0, 0.07, 1) forwards;
 	}
 
 
@@ -78,7 +79,7 @@
 	100% {
 	  width: 440px;
 	  height: 280px;
-	  background: black;
+	  background: yellow;
 	  border-radius: 4px;
 	}
 }
@@ -86,8 +87,8 @@
 
 <aside class="profile-card">
 	<div class="center">
-		<h1 style="color:white;"> User: {{name}} </h1>
-		<h2 style="color:white;"> Role: {{role}} </h2>
+		<h1 style="color:black;"> User: {{name}} </h1>
+		<h2 style="color:black;"> Role: {{role}} </h2>
 	</div>
 </aside>
 
