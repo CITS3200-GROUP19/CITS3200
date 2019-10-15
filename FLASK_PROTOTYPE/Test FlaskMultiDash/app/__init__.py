@@ -24,6 +24,10 @@ def create_app():
     from app.dashapp2.layout import layout as layout2
     from app.dashapp2.callbacks import register_callbacks as register_callbacks2
     register_dashapp(server, 'Dashapp 2', 'dashboard2', layout2, register_callbacks2)
+
+    # from app.dashapp3.layout import layout as layout3
+    # from app.dashapp3.callbacks import register_callbacks as register_callbacks3
+    # register_dashapp(server, 'Dashapp 3', 'dashboard3', layout3, register_callbacks3)
     
     register_extensions(server)
     register_blueprints(server)
@@ -63,7 +67,7 @@ def register_dashapp(app, title, base_pathname, layout, register_callbacks_fun):
 
 def _protect_dashviews(dashapp):
     for view_func in dashapp.server.view_functions:
-        if view_func.startswith('/dashboard1') or view_func.startswith('/dashboard2'):
+        if view_func.startswith('/dashboard1') or view_func.startswith('/dashboard2'): ##or view_func.startswith('/dashboard3'):
         # if view_func.startswith(dashapp.routes_pathname_prefix):
             dashapp.server.view_functions[view_func] = login_required(dashapp.server.view_functions[view_func])
 
