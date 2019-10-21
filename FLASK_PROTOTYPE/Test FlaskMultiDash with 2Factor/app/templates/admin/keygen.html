@@ -283,10 +283,13 @@ input[type=text]:placeholder {
   <div id="formContent">
 
     <!-- Login Form -->
-    <form method=post>
+    <form action="" method="POST">
     	{{ form.csrf_token }}
     	{{ form.name }}
-    	{{ wtf.quick_form(form) }}
+      {{ wtf.quick_form(form) }}
+      {% if form.errors %}
+        {{ form.errors }}
+      {% endif %}
     </form>
 
   </div>

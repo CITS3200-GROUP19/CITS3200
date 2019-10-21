@@ -5,7 +5,7 @@ from flask_login import login_required
 from flask_bootstrap import Bootstrap
 
 from flask_admin import Admin
-from app.routes import MyModelView, NewView, KeyGenView
+from app.routes import MyModelView, NewView, MyAdminIndexView, DoctorKeyGen, ResearcherKeyGen
 from app.models import User, PatientTable, FactTable
 from app.extensions import login_manager
 
@@ -81,11 +81,12 @@ def register_extensions(server):
         login_manager.init_app(server)
         login_manager.login_view = 'main.login'
         migrate.init_app(server, db)
-        admin = Admin(server, template_mode='bootstrap3')
+        admin = Admin(server, template_mode='bootstrap3', index_view=MyAdminIndexView())
         admin.add_view(MyModelView(User, db.session))
         admin.add_view(MyModelView(PatientTable, db.session))
-        admin.add_view(KeyGenView(name='Invite Key', endpoint='keygen'))
-        admin.add_view(NewView(name='back'))
+        admin.add_view(DoctorKeyGen(name='Generate Doctor Invite Key'))
+        admin.add_view(ResearcherKeyGen(name='Generate Researcher Invite Key'))
+        admin.add_view(NewView(name='Back'))
 
 
 def register_blueprints(server):

@@ -6,7 +6,8 @@ import os
 import pandas as pd
 import plotly.graph_objs as go
 import numpy as np
-
+from sqlalchemy import text
+from app.models import FactTable, ReliabilityTable, EyeTable, DefectTable
 
 
 # from sqlalchemy import create_engine
@@ -22,8 +23,9 @@ def register_callbacks(dashapp):
     @dashapp.callback(Output('my-graph', 'figure'), [Input('my-dropdown-Y', 'value'),Input('my-dropdown-X', 'value')])
     def update_graph(varY,varX):
         print(varX,varY)
-        sql_string = 'SELECT * FROM FactTable JOIN ReliabilityTable ON FactTable.ReliabilityID = ReliabilityTable.ReliabilityID JOIN EyeTable ON FactTable.EyeID = EyeTable.EyeID JOIN DefectTable ON DefectTable.DefectID = FactTable.DefectID'
-        df = pd.read_sql(sql_string, con=db.engine)
+        # sql_string = text('SELECT * FROM FactTable JOIN ReliabilityTable ON FactTable.ReliabilityID = ReliabilityTable.ReliabilityID JOIN EyeTable ON FactTable.EyeID = EyeTable.EyeID JOIN DefectTable ON DefectTable.DefectID = FactTable.DefectID')
+        query = db.session.query(FactTable).join(ReliabilityTable).join(EyeTable).join(DefectTable)
+        df = pd.read_sql(query.statement, con=db.engine)
         #print(df[varX])
         traces = []
         for x_value in eval("df."+varX+".unique()"):

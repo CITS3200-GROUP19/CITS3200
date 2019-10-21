@@ -9,7 +9,7 @@
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
-from sqlalchemy.sql import exists   
+from sqlalchemy.sql import exists
 
 from app.extensions import db
 
@@ -181,18 +181,29 @@ class InviteKey(db.Model):
     __tablename__ = 'InviteKey'
 
     id = db.Column('ID', db.Integer, primary_key=True, unique=True)
-    invite_key_hash = db.Column('InviteKeyHash', db.String(128))
+    key_hash = db.Column('InviteKeyHash', db.String(128))
     role = db.Column('Role', db.Enum('doctor', 'researcher', 'admin'))
 
-    def check_key(key_input):
-        # Check if hashed version of key exists in database
-        hashed_key_input = generate_password_hash(key_input)
-        return db.session.query(db.exists().where(InviteKey.invite_key_hash == hashed_key_input)).scalar()
+    # def check_key(key_input):
+    #     # Check if hashed version of key exists in database
+    #     for key_hash in db.session.query(InviteKey.key_hash):
+    #         match_found = check_password_hash(key_hash, key_input)
+    #         if match_found:
+    #             return db.session.query(InviteKey).filter(InviteKey.key_hash == key_hash)
+        # hashed_key_input = generate_password_hash(key_input)
+        # print(hashed_key_input)
+        # return db.session.query(db.exists().where(InviteKey.key_hash == hashed_key_input)).scalar()
 
     def get_key_row(invite_key):
-        hashed_invite_key = generate_password_hash(invite_key)
-        qry = db.session.query(InviteKey).filter(InviteKey.invite_key_hash == hashed_invite_key)
-        return qry.first()
+        key_hashes = [InviteKey.key_hash for InviteKey in InviteKey.query.all()]
+        for inv_key_hash in key_hashes:
+            match_found = check_password_hash(inv_key_hash, invite_key)
+            if match_found:
+                return db.session.query(InviteKey).filter(InviteKey.key_hash == inv_key_hash).first()
+        return None
+        # hashed_invite_key = generate_password_hash(invite_key)
+        # qry = db.session.query(InviteKey).filter(InviteKey.key_hash == hashed_invite_key)
+        # return qry.first()
 
     def set_key(self, key_string):
-        self.invite_key_hash = generate_password_hash(key_string)
+        self.key_hash = generate_password_hash(key_string)

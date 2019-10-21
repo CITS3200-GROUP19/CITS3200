@@ -22,4 +22,3 @@ class RegistrationForm(FlaskForm):
 class KeyGenForm(FlaskForm):
     role = SelectField('Select Role', validators=[DataRequired()], choices=[('doctor','Doctor'), ('researcher','Researcher')])
     submit = SubmitField('Generate Invite Key')
-    
