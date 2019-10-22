@@ -25,10 +25,10 @@ def create_app():
     from app.dashapp2.callbacks import register_callbacks as register_callbacks2
     register_dashapp(server, 'Dashapp 2', 'dashboard2', layout2, register_callbacks2)
 
-    # from app.dashapp3.layout import layout as layout3
-    # from app.dashapp3.callbacks import register_callbacks as register_callbacks3
-    # register_dashapp(server, 'Dashapp 3', 'dashboard3', layout3, register_callbacks3)
-    
+    from app.dashapp3.layout import layout as layout3
+    from app.dashapp3.callbacks import register_callbacks as register_callbacks3
+    register_dashapp(server, 'Dashapp 3', 'dashboard3', layout3, register_callbacks3)
+
     register_extensions(server)
     register_blueprints(server)
 
@@ -54,7 +54,7 @@ def register_dashapp(app, title, base_pathname, layout, register_callbacks_fun):
 
     my_dashapp = dash.Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'],
                            server=app,
-                           routes_pathname_prefix=f'/{base_pathname}/',
+                           url_base_pathname=f'/{base_pathname}/',
                            assets_folder=get_root_path(__name__) + f'/{base_pathname}/assets/',
                            meta_tags=[meta_viewport])
     # Push an application context so we can use Flask's 'current_app'
@@ -67,7 +67,7 @@ def register_dashapp(app, title, base_pathname, layout, register_callbacks_fun):
 
 def _protect_dashviews(dashapp):
     for view_func in dashapp.server.view_functions:
-        if view_func.startswith('/dashboard1') or view_func.startswith('/dashboard2'): ##or view_func.startswith('/dashboard3'):
+        if view_func.startswith(dashapp.config.url_base_pathname):
         # if view_func.startswith(dashapp.routes_pathname_prefix):
             dashapp.server.view_functions[view_func] = login_required(dashapp.server.view_functions[view_func])
 

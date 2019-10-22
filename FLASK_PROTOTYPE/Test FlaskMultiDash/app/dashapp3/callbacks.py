@@ -188,12 +188,12 @@ def register_callbacks(dashapp):
     # Callback function to display test results from selected row
     @dashapp.callback(
         # Outputs id of selected row
-        [Output('graphs', "children"),
-         Output('slider-output-container', 'children'),
-         ]
+        Output('graphs', "children"),
+        #Output('slider-output-container', 'children'),
+
         # Output(component_id='cur_plot', component_property='src'),
         [Input('All Data', "selected_rows"),
-         Input('slider-output-container', 'value')
+         Input('slider-output-container', 'children')
          ])
 
     # Returns row id of selected row
