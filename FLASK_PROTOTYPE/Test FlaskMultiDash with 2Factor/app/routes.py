@@ -53,6 +53,10 @@ def index():
 @server_mod.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
+        ## Disabled for testing
+        # if current_user.role == admin:
+        #     return redirect(url_for("main.admin"))
+        # else:
         return redirect(url_for("main.index"))
 
     form = LoginForm()
@@ -110,6 +114,7 @@ def about():
 @login_required
 @limiter.exempt
 def admin():
+    ## Disabled for testing
     # if (current_user.is_authenticated and current_user.role == 'admin'):
     if current_user.is_authenticated:
         return "admin"
