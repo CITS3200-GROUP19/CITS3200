@@ -9,7 +9,7 @@ from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
 from werkzeug.urls import url_parse
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 
 import string
 import random
@@ -17,22 +17,22 @@ import random
 from flask_admin import Admin, AdminIndexView, expose, BaseView
 from flask_admin.contrib.sqla import ModelView
 
-from app.forms import LoginForm, RegistrationForm, KeyGenForm
+from app.forms import LoginForm, RegistrationForm
 from app.models import User, InviteKey
 from app.extensions import db
 from app.extensions import limiter
 
-server_mod = Blueprint('main', __name__)
+server_mod = Blueprint("main", __name__)
 
 
 # Helper method for admin keygen buttons that returns randomised 10 character alphanumerical string
 # Stores hash of this string in db
 def key_generator(selected_role):
     lettersAndDigits = string.ascii_letters + string.digits
-    generated_key = ''.join(random.choice(lettersAndDigits) for i in range(10))
+    generated_key = "".join(random.choice(lettersAndDigits) for i in range(10))
     # Check generated key not in db already
-    while (InviteKey.get_key_row(generated_key)):
-        generated_key = ''.join(random.choice(lettersAndDigits) for i in range(10))
+    while InviteKey.get_key_row(generated_key):
+        generated_key = "".join(random.choice(lettersAndDigits) for i in range(10))
 
     invite_key = InviteKey(role=selected_role)
     invite_key.set_key(generated_key)
@@ -41,189 +41,161 @@ def key_generator(selected_role):
     return generated_key
 
 
-@server_mod.route('/')
+@server_mod.route("/")
 @limiter.exempt
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+        return redirect(url_for("main.home"))
     else:
-        return redirect(url_for('main.login'))
+        return redirect(url_for("main.login"))
 
 
-@server_mod.route('/login', methods=['GET', 'POST'])
+@server_mod.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
+        ## Disabled for testing
+        # if current_user.role == admin:
+        #     return redirect(url_for("main.admin"))
+        # else:
+        return redirect(url_for("main.index"))
 
     form = LoginForm()
 
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not check_password_hash(user.password_hash, form.password.data):
-            error = 'Invalid username or password'
-            return render_template('login.html', form=form, error=error)
+        if user is None or not check_password_hash(
+            user.password_hash, form.password.data
+        ):
+            error = "Invalid username or password"
+            return render_template("login.html", form=form, error=error)
 
         login_user(user, remember=form.remember.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('main.index')
+        next_page = request.args.get("next")
+        if not next_page or url_parse(next_page).netloc != "":
+            next_page = url_for("main.index")
         return redirect(next_page)
 
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template("login.html", title="Sign In", form=form)
 
 
-@server_mod.route('/logout')
+@server_mod.route("/logout")
 @login_required
 @limiter.exempt
 def logout():
     logout_user()
 
-    return redirect(url_for('main.index'))
+    return redirect(url_for("main.index"))
 
 
-@server_mod.route('/user_profile')
+@server_mod.route("/user_profile")
 @login_required
 @limiter.exempt
 def user_profile():
-    return render_template('user_profile.html', name=current_user.username, role=current_user.role)
+    return render_template(
+        "user_profile.html", name=current_user.username, role=current_user.role
+    )
 
 
-@server_mod.route('/home')
+@server_mod.route("/home")
 @login_required
 @limiter.exempt
 def home():
-    return render_template('home.html')#, name=current_user.username)
+    return render_template("home.html")  # , name=current_user.username)
 
 
-@server_mod.route('/about')
+@server_mod.route("/about")
 @login_required
 @limiter.exempt
 def about():
-    return render_template('about.html')#, name=current_user.username)
+    return render_template("about.html")  # , name=current_user.username)
 
 
-@server_mod.route('/admin', methods=['GET', 'POST'])
+@server_mod.route("/admin", methods=["GET", "POST"])
 @login_required
 @limiter.exempt
 def admin():
+    ## Disabled for testing
     # if (current_user.is_authenticated and current_user.role == 'admin'):
     if current_user.is_authenticated:
-        return 'admin'
+        return "admin"
     else:
         form = LoginForm()
-        error = 'Please log in'
-        return render_template('login.html', form=form, error=error)
+        error = "Please log in"
+        return render_template("login.html", form=form, error=error)
 
 
 class MyAdminIndexView(AdminIndexView):
     decorators = [limiter.exempt]
+
     def is_accessible(self):
         return current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect(url_for('main.login', next=request.url))
+        return redirect(url_for("main.login", next=request.url))
 
 
 class MyModelView(ModelView):
     decorators = [limiter.exempt]
+
     def is_accessible(self):
         return current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for('main.admin'))
+        return redirect(url_for("main.admin"))
 
 
 class NewView(BaseView):
     decorators = [limiter.exempt]
-    @expose('/')
+
+    @expose("/")
     def index(self):
-        return redirect(url_for('main.index'))
-
-# class KeyGenView(BaseView):
-#     @expose('/')
-#     def index(self):
-#         return redirect(url_for('main.keygen'))
-        # form = KeyGenForm()
-        # if form.validate_on_submit():
-        #     # return self.render('admin/keygen.html')
-
-        #     #Generate a random string of letters and digits
-        #     lettersAndDigits = string.ascii_letters + string.digits
-        #     generated_key = ''.join(random.choice(lettersAndDigits) for i in range(10))
-        #     while (InviteKey.check_key(generated_key)):
-        #         generated_key = ''.join(random.choice(lettersAndDigits) for i in range(10))
-        #     flash("Your generated invite key is {key}".format(key=generated_key))
-
-        #     # Check generated key not in db already
-        #     invite_key = InviteKey(role=form.role.data)
-        #     invite_key.set_key(generated_key)
-        #     db.session.add(invite_key)
-        #     db.session.commit()
-
-        #     return render_template('admin/keygen.html', form=form)
-
-        # return redirect(url_for('main.admin'))
+        return redirect(url_for("main.index"))
 
 
 class DoctorKeyGen(BaseView):
     decorators = [limiter.exempt]
-    @expose('/')
+
+    @expose("/")
     def index(self):
-        generated_key = key_generator('doctor')
-        flash("Your generated {role} invite key is {key}".format(key=generated_key, role='doctor'))
-        return redirect(url_for('main.admin'))
-        # return redirect(url_for('main.keygen'))
+        generated_key = key_generator("doctor")
+        flash(
+            "Your generated {role} invite key is {key}".format(
+                key=generated_key, role="doctor"
+            )
+        )
+        return redirect(url_for("main.admin"))
 
 
 class ResearcherKeyGen(BaseView):
     decorators = [limiter.exempt]
-    @expose('/')
+
+    @expose("/")
     def index(self):
-        generated_key = key_generator('researcher')
-        flash("Your generated {role} invite key is {key}".format(key=generated_key, role='researcher'))
-        return redirect(url_for('main.admin'))
-        # return redirect(url_for('main.keygen'))
-
-# # Currently role is not added to generated key due to form.validate_on_submit(): not working
-# @server_mod.route('/keygen', methods=['GET', 'POST'])
-# @login_required
-# def keygen(role):
-#     if (current_user.is_authenticated):
-#         # form = KeyGenForm(request.form)
-#         # if form.validate_on_submit():
-#         generated_key = key_generator()
-#         flash("Your generated invite key is {key} with role {role}".format(key=generated_key, role=form.role.data))
-
-#             # Check generated key not in db already
-#             invite_key = InviteKey(role=form.role.data)
-#             invite_key.set_key(generated_key)
-#             db.session.add(invite_key)
-#             db.session.commit()
-#             return render_template('admin/keygen.html', form=form)
-#     else:
-#         form = LoginForm()
-#         error = 'Please log in'
-#         return render_template('login.html', form=form, error=error)
-
-#     # return redirect(url_for('main.admin'))
+        generated_key = key_generator("researcher")
+        flash(
+            "Your generated {role} invite key is {key}".format(
+                key=generated_key, role="researcher"
+            )
+        )
+        return redirect(url_for("main.admin"))
 
 
-@server_mod.route('/register', methods=['GET', 'POST'])
+@server_mod.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
+        return redirect(url_for("main.index"))
 
     form = RegistrationForm()
     if form.validate_on_submit():
         # Check invite key
         invite_key = InviteKey.get_key_row(form.invite_key.data)
         if invite_key is None:
-            error = 'Invalid invite key'
-            return render_template('register.html', form=form, error=error)
+            error = "Invalid invite key"
+            return render_template("register.html", form=form, error=error)
         if invite_key.role != form.role.data:
-            error = 'This invite key cannot be used for the selected role'
-            return render_template('register.html', form=form, error=error)
+            error = "This invite key cannot be used for the selected role"
+            return render_template("register.html", form=form, error=error)
 
         user = User(username=form.username.data)
         user.set_password(form.password.data)
@@ -235,6 +207,6 @@ def register():
             db.session.delete(invite_key)
         db.session.commit()
 
-        return redirect(url_for('main.login'))
+        return redirect(url_for("main.login"))
 
-    return render_template('register.html', title='Register', form=form)
+    return render_template("register.html", title="Register", form=form)

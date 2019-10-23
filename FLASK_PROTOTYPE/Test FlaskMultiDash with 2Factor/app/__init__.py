@@ -5,7 +5,13 @@ from flask_login import login_required
 from flask_bootstrap import Bootstrap
 
 from flask_admin import Admin
-from app.routes import MyModelView, NewView, MyAdminIndexView, DoctorKeyGen, ResearcherKeyGen
+from app.routes import (
+    MyModelView,
+    NewView,
+    MyAdminIndexView,
+    DoctorKeyGen,
+    ResearcherKeyGen,
+)
 from app.models import User, PatientTable, FactTable
 from app.extensions import login_manager
 
@@ -19,26 +25,21 @@ def create_app():
 
     from app.dashapp1.layout import layout as layout1
     from app.dashapp1.callbacks import register_callbacks as register_callbacks1
-    register_dashapp(server, 'Dashapp 1', 'dashboard1', layout1, register_callbacks1)
+
+    register_dashapp(server, "Dashapp 1", "dashboard1", layout1, register_callbacks1)
 
     from app.dashapp2.layout import layout as layout2
     from app.dashapp2.callbacks import register_callbacks as register_callbacks2
-    register_dashapp(server, 'Dashapp 2', 'dashboard2', layout2, register_callbacks2)
+
+    register_dashapp(server, "Dashapp 2", "dashboard2", layout2, register_callbacks2)
 
     from app.dashapp3.layout import layout as layout3
     from app.dashapp3.callbacks import register_callbacks as register_callbacks3
-    register_dashapp(server, 'Dashapp 3', 'dashboard3', layout3, register_callbacks3)
+
+    register_dashapp(server, "Dashapp 3", "dashboard3", layout3, register_callbacks3)
 
     register_extensions(server)
     register_blueprints(server)
-
-    # login_manager = LoginManager()
-    # login_manager.init_app(server)
-    # login_manager.login_view = 'main.login'
-
-    # admin = Admin(server, template_mode='bootstrap3')
-    # admin.add_view(MyModelView(User, db.session))
-    # admin.add_view(NewView(name='back'))
 
     return server
 
@@ -50,13 +51,19 @@ def load_user(user_id):
 
 def register_dashapp(app, title, base_pathname, layout, register_callbacks_fun):
     # Meta tags for viewport responsiveness
-    meta_viewport = {"name": "viewport", "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
+    meta_viewport = {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1, shrink-to-fit=no",
+    }
 
-    my_dashapp = dash.Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'],
-                           server=app,
-                           url_base_pathname=f'/{base_pathname}/',
-                           assets_folder=get_root_path(__name__) + f'/{base_pathname}/assets/',
-                           meta_tags=[meta_viewport])
+    my_dashapp = dash.Dash(
+        __name__,
+        external_stylesheets=["https://codepen.io/chriddyp/pen/bWLwgP.css"],
+        server=app,
+        url_base_pathname=f"/{base_pathname}/",
+        assets_folder=get_root_path(__name__) + f"/{base_pathname}/assets/",
+        meta_tags=[meta_viewport],
+    )
     # Push an application context so we can use Flask's 'current_app'
     with app.app_context():
         my_dashapp.title = title
@@ -68,8 +75,9 @@ def register_dashapp(app, title, base_pathname, layout, register_callbacks_fun):
 def _protect_dashviews(dashapp):
     for view_func in dashapp.server.view_functions:
         if view_func.startswith(dashapp.config.url_base_pathname):
-        # if view_func.startswith(dashapp.routes_pathname_prefix):
-            dashapp.server.view_functions[view_func] = login_required(dashapp.server.view_functions[view_func])
+            dashapp.server.view_functions[view_func] = login_required(
+                dashapp.server.view_functions[view_func]
+            )
 
 
 def register_extensions(server):
@@ -79,14 +87,14 @@ def register_extensions(server):
     with server.app_context():
         db.init_app(server)
         login_manager.init_app(server)
-        login_manager.login_view = 'main.login'
+        login_manager.login_view = "main.login"
         migrate.init_app(server, db)
-        admin = Admin(server, template_mode='bootstrap3', index_view=MyAdminIndexView())
+        admin = Admin(server, template_mode="bootstrap3", index_view=MyAdminIndexView())
         admin.add_view(MyModelView(User, db.session))
         admin.add_view(MyModelView(PatientTable, db.session))
-        admin.add_view(DoctorKeyGen(name='Generate Doctor Invite Key'))
-        admin.add_view(ResearcherKeyGen(name='Generate Researcher Invite Key'))
-        admin.add_view(NewView(name='Back'))
+        admin.add_view(DoctorKeyGen(name="Generate Doctor Invite Key"))
+        admin.add_view(ResearcherKeyGen(name="Generate Researcher Invite Key"))
+        admin.add_view(NewView(name="Back"))
 
 
 def register_blueprints(server):
