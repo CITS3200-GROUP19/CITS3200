@@ -14,11 +14,11 @@ import os
 # print(df)
 
 layout = html.Div([
-    html.H1('Averages on Age'),
+    html.H1('Aggregates of Visual Field Data'),
     dcc.Dropdown(
         id='my-dropdown-X',
         options=[
-            {'label': 'Runtime', 'value': 'Runtime'},
+            {'label': 'Run Time', 'value': 'Runtime'},
             {'label': 'Mean Deviation', 'value': 'Mean_Deviation'},
             {'label': 'Pattern Deviation', 'value': 'Pattern_Deviation'},
             {'label': 'Age', 'value': 'Age'},
@@ -27,7 +27,7 @@ layout = html.Div([
             {'label': 'Number of Defects', 'value': 'DefectNumberOf'}
 
         ],
-        value='Age'
+        placeholder="Select X axis"
     ),
     dcc.Dropdown(
         id='my-dropdown-Y',
@@ -40,7 +40,8 @@ layout = html.Div([
             {'label': 'Reliability Score', 'value': 'ReliabilityScore'},
             {'label': 'Number of Defects', 'value': 'DefectNumberOf'}
         ],
-        value='Age'
+        placeholder="Select Y axis"
     ),
-    dcc.Graph(id='my-graph')
+    dcc.Graph(id='my-graph'),
+    dcc.Graph(id='bar-chart')
 ], style={'width': '500'})
