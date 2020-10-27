@@ -27,5 +27,5 @@ w3lib==1.21.0
 Werkzeug==0.16.0
 WTForms==2.2.1
 PyMySQL==0.9.3
-cryptography==2.8
+cryptography==3.2
 Flask-Limiter==1.1.0
