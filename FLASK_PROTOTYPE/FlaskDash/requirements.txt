@@ -27,4 +27,4 @@ w3lib==1.21.0
 Werkzeug==0.16.0
 WTForms==2.2.1
 PyMySQL==0.9.3
-cryptography==2.7
+cryptography==3.2
